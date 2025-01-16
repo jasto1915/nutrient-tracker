@@ -47,13 +47,50 @@ app examples given in the application info.
 ### Solution Architecture/Technology
 
 **Decision**: 
+Web Application using MEAN stack
+_Functionality_
+- Nutrient Measurement
+  - Provide UI for user to input natural language based input, such as "For breakfast, I ate a whole grain bread with 
+  peanut butter jam"
+  - Provide text to guide user on providing enough information with focus on ingredient and portion
+  - Provide user to edit summarized meal info [for later stages]
 
-**Reasoning**:
+-Nutrient Tracking
+    - Record what meal user ate, nutrients contained in it, and saving it into the database
+    - Record User's info such as weight, height, gender, etc. in relation to the goal
+    - Provide nutrient goals for user and the discprency between the daily goal and what they have consumed
+
+-Nutrient Suggestion
+    - Provide suggestions to user on what meal to eat based on nutrient goals
+    - User can choose meal preferences before system providing suggestions (ex. japanese food) [if applicable]
+
+_Tech Stack_
+- Front-end: Angular
+- Database: MongoDB
+- Back-end: Node.js - Express.js - Javascript
+
+
+**Reasoning**: The reason to chose a web app is because of its well-suited structure for our requirements and ease of use.
+Firstly, we need a good UI (in preperation for possible later stages), a structure that can call API requests, and handle database
+queries, while also being done in good principles (ex. SOLID). Web app is able to fulfill this requirements. Web app, with 
+frameworks such as express, supports and eases the build process for connecting to external API's and databases. 
+With Javascript and tools such as mongoose, it enables good coding practices, such as seperation of concern and a strict schema.
+Web apps has naturally evolved to be suited for API requests and database connections. In addition, web apps are simple
+to deploy and require no setup from the tester. In comparison, desktop apps require additional configuration and deployment
+for each platform and install/setup from the user.
+
+Regarding the tech stack, Node.js - Express.js has been a proven solution to build robust web apps. It also simplifies 
+development which is essential with the current time constraint. MongoDB is the suitable choice for database because
+our requirement is to save meals and their associated nutrient info, as well as the user's info. These informations
+that can be classified into per documents and have their unique values, is suited to the structure of MongoDB. Lastly,
+the front end has more breadth for choosing the framework, as most used ones are simillar in functionality. Hence, I chose
+the one of which I am most familiar with which is Angular.
 
 
 **Thought Process**: Building an app that received user input can be done through Web app, Desktop/mobile app, or just a script
 and a shell for input. Certainly, the end goal which is most convenient for the user is not a shell script. However, with 
-the time constraint, I plan to focus to build the back-end and logic first, with a simple terminal user input first if needed
+the time constraint, I plan to focus to build the back-end and logic first, with a simple user input first if needed
 for testing. The front-end can be developed in the later stages. In our app, there are then three main features,
-nutrition measurement, nutrition tracker, nutrition suggestion, with main services such as data persistence and 
-https requests. The code must handle data connections to the database, external requests to API's, input guidance...
+nutrition measurement, nutrition tracker, nutrition suggestion, with main services which is data persistence and 
+https api requests. The platform I deploy must also be easy to use for the testers. With all these considerations, a 
+web app is most suitable for the task (explanation in Reasoning section)
