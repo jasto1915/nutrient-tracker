@@ -76,6 +76,17 @@ _Timeline_
 19 Jan: Test, Document, and host the web app in firebase
 20 Jan: If time permits, then continue developing front end and update to hosting.
 
+_Feature milestone_
+- Nutrient Measurement
+  - Mile 1
+    - setup simple input and output panel for frontend [DONE]
+    - setup backend with express and mongodb connection [DONE]
+    - build routing from front end to backend to receive text input [DONE]
+  - Mile 2
+    - build external api to send text input and get back food type
+    - build routing to send back meal info to display to user
+
+explain about why you structure the project liek that (router, controller, etc.)
 
 **Reasoning**: The reason to chose a web app is because of its well-suited structure for our requirements and ease of use.
 Firstly, we need a good UI (in preperation for possible later stages), a structure that can call API requests, and handle database
