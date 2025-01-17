@@ -83,7 +83,7 @@ _Feature milestone_
     - setup backend with express and mongodb connection [DONE]
     - build routing from front end to backend to receive text input [DONE]
   - Mile 2
-    - build external api to send text input and get back food type
+    - build external api to send text input and get back food type [DONE]
     - build routing to send back meal info to display to user
 
 explain about why you structure the project liek that (router, controller, etc.)
