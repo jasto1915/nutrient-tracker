@@ -68,6 +68,13 @@ _Tech Stack_
 - Front-end: Angular
 - Database: MongoDB
 - Back-end: Node.js - Express.js - Javascript
+- Hosting: Firebase
+
+_Timeline_
+17 Jan: Build most of the back-end with simple front end
+18 Jan: Finish buiding back-end and develop front end to a suitable fidelity and complexity
+19 Jan: Test, Document, and host the web app in firebase
+20 Jan: If time permits, then continue developing front end and update to hosting.
 
 
 **Reasoning**: The reason to chose a web app is because of its well-suited structure for our requirements and ease of use.
@@ -82,9 +89,11 @@ for each platform and install/setup from the user.
 Regarding the tech stack, Node.js - Express.js has been a proven solution to build robust web apps. It also simplifies 
 development which is essential with the current time constraint. MongoDB is the suitable choice for database because
 our requirement is to save meals and their associated nutrient info, as well as the user's info. These informations
-that can be classified into per documents and have their unique values, is suited to the structure of MongoDB. Lastly,
-the front end has more breadth for choosing the framework, as most used ones are simillar in functionality. Hence, I chose
-the one of which I am most familiar with which is Angular.
+that can be classified into per documents and have their unique values, is suited to the structure of MongoDB. MongoDB
+would also use its atlas version (atlas is its online version; use local version first for development), so that database
+can be hosted online. In addition, the front end has more breadth for choosing the framework, as most used ones are 
+simillar in functionality. Hence, I chose the one of which I am most familiar with which is Angular. Lastly,
+hosting will use firebase, because its free tier provide free hosting for front and back end.
 
 
 **Thought Process**: Building an app that received user input can be done through Web app, Desktop/mobile app, or just a script
@@ -94,3 +103,5 @@ for testing. The front-end can be developed in the later stages. In our app, the
 nutrition measurement, nutrition tracker, nutrition suggestion, with main services which is data persistence and 
 https api requests. The platform I deploy must also be easy to use for the testers. With all these considerations, a 
 web app is most suitable for the task (explanation in Reasoning section)
+
+
