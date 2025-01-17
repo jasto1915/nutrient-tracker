@@ -84,7 +84,7 @@ _Feature milestone_
     - build routing from front end to backend to receive text input [DONE]
   - Mile 2
     - build external api to send text input and get back food type [DONE]
-    - build routing to send back meal info to display to user
+    - build routing to send back meal info to display to user [DONE]
 
 explain about why you structure the project liek that (router, controller, etc.)
 

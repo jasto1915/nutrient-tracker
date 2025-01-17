@@ -2,6 +2,7 @@ import {Component, input} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {DatabaseService} from './database.service';
+import {ExternalAPIService} from './external-api.service';
 
 
 @Component({
@@ -15,14 +16,16 @@ export class AppComponent {
   text = 'DeepNeuron-OnHit-Stage2';
   textInput = "";
 
-  constructor(private db: DatabaseService) {
+  constructor(private db: DatabaseService, private extapi: ExternalAPIService) {
   }
 
   sendInput(){
-    let data = {text: this.textInput};
+    let data = {text:this.textInput};
 
-    this.db.addMeal(data).subscribe(data => {
-      console.log(data);
+    this.extapi.parseLanguage(data).subscribe((data:any) => {
+      this.text = data
+      console.log(data)
     })
+
    }
 }

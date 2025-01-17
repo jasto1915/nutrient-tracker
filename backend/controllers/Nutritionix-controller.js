@@ -6,6 +6,8 @@ module.exports = {
 
 
   parseFreeformToMeal: async function (req, res) {
+    console.log("received")
+    console.log(req.body.text)
     let body = {
       query: "grape"
     }
@@ -17,8 +19,10 @@ module.exports = {
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
     let response = await axios.post(url,body, {headers:headers})
-
-    res.send(response.data)
+    console.log("received 2")
+    //console.log(response.data)
+    //console.log(response.data.foods[0].food_name)
+    res.send({text: response.data.foods[0].food_name})
 
   }
 }
