@@ -115,7 +115,25 @@ module.exports = {
     }
 
 
+  },
+
+  getNutrientGoal: async function (req, res) {
+    try {
+      let data = await User.find({})
+      console.log(data)
+      if(data != null) {
+        console.log("here")
+        let calorie = {name: "Calorie", value: data[0].dailyCalorie}
+        let nutrients =
+          [calorie, ...data[0].macronutrients]
+        console.log("here2")
+        res.send({status:"success",nutrients: nutrients, goal:data[0].goal})
+
+      }else{
+        res.send({status:"failed, there is no user"})
+      }
+    }catch(err){
+      res.send({status:"failed, please try again"})
+    }
   }
-
-
 }

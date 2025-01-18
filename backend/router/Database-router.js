@@ -7,4 +7,6 @@ router.post("/meal/add", databaseController.addMeal)
 
 router.post("/user/add", databaseController.addUserInfo)
 
+router.get("/user/getNutrientGoal", databaseController.getNutrientGoal)
+
 module.exports = router;
