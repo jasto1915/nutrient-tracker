@@ -81,14 +81,11 @@ export class AppComponent {
   ngOnInit(){
     this.db.getDailyNutrientGoal().subscribe((data:any) => {
       if(data.status == "success") {
-        console.log("sent")
         this.goalStatus = "success"
         this.goal = data.goal
-        console.log(this.goal)
         this.nutrientList = data.nutrients
       }else{
         this.goalStatus = "failure"
-        console.log(data)
       }
     })
   }
@@ -120,13 +117,11 @@ export class AppComponent {
      this.db.getDailyNutrientGoal().subscribe((data:any) => {
 
        if(data.status == "success") {
-         console.log("sent")
          this.goalStatus = "success"
          this.nutrientList = data.nutrients
          this.goal = data.goal
        }else{
          this.goalStatus = "failure"
-         console.log(data)
        }
 
      })

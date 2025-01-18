@@ -92,12 +92,12 @@ _Feature milestone_
     - create ok button for user to agree to the meals added [DONE]
     - send the meal to the database [DONE]
   - Mile 5
-    - add interface for user info, which is name, age, gender, height, weight, and goal
-    - setup backend to save user info
+    - add interface for user info, which is name, age, gender, height, weight, and goal [DONE]
+    - setup backend to save user info [DONE]
   - Mile 6
-    - Research formula for nutrient intake per goal
-    - compute nutrient goal per day
-    - send the nutrient goal to the front end
+    - Research formula for nutrient intake per goal [DONE]
+    - compute nutrient goal per day [DONE]
+    - send the nutrient goal to the front end [DONE]
   
 - Nutrient Tracking
   - Mile 1
@@ -115,7 +115,8 @@ _Feature milestone_
     - place inside the daily tracking
   
 
-explain about why you structure the project liek that (router, controller, etc.)
+explain about why you structure the project like that (router, controller, etc.); explain why the steps above are like that;
+explain why the code is like that (ex. why create user and meal class)
 
 **Reasoning**: The reason to chose a web app is because of its well-suited structure for our requirements and ease of use.
 Firstly, we need a good UI (in preperation for possible later stages), a structure that can call API requests, and handle database
