@@ -7,7 +7,7 @@
   <label for="food-input" class="form-label">Enter what you ate</label><br/>
   <textarea rows="4" cols="50" name="food-input" id="food-input" [(ngModel)]="textInput" required></textarea>
 </div>
-<button (click)="sendInput()" class="btn btn-primary">Submit</button>
+<button (click)="sendMealInput()" class="btn btn-primary">Submit</button>
 
 <br/>
 <br/>
@@ -22,3 +22,56 @@
   <h6>protein: {{meal.protein}}</h6>
 </div>
 <button (click)="confirmMeal()" class="btn btn-primary">Confirm Meal</button>
+<div>
+  <h5>{{mealStatus}}</h5>
+</div>
+
+
+<br/>
+<div>
+  <h5>User Info</h5>
+</div>
+<div>
+  <label for="name" class="form-label">name: </label>
+  <input type="text" for="name" id="name" [(ngModel)]="user.name" class="form-control form-control-sm" required>
+</div>
+<div>
+  <label for="age" class="form-label">age: </label>
+  <input type="number" for="age" id="age" [(ngModel)]="user.age" class="form-control form-control-sm" required>
+</div>
+<div>
+  <label for="gender" class="form-label">gender: </label>
+  <select name="gender" id="gender" [(ngModel)]="user.gender">
+    <option>Male</option>
+    <option>Female</option>
+  </select>
+</div>
+<div>
+  <label for="height" class="form-label">height: </label>
+  <input type="number" for="height" id="height" [(ngModel)]="user.height" class="form-control form-control-sm" required>
+</div>
+<div>
+  <label for="weight" class="form-label">weight: </label>
+  <input type="number" for="weight" id="weight" [(ngModel)]="user.weight" class="form-control form-control-sm" required>
+</div>
+<div>
+  <label for="activity-level" class="form-label">activity level: </label>
+  <select name="activity-level" id="activity-level" [(ngModel)]="user.activityLevel">
+    <option>Non-existent</option>
+    <option>Minimal</option>
+    <option>Moderate</option>
+    <option>High</option>
+  </select>
+</div>
+<div>
+  <label for="goal" class="form-label">goal: </label>
+  <select name="goal" id="goal" [(ngModel)]="user.goal">
+    <option>Lose weight</option>
+    <option>Gain weight</option>
+  </select>
+</div>
+<button (click)="sendUserInfo()" class="btn btn-primary">Send User Info</button>
+
+<div>
+  <h6>{{userStatus}}</h6>
+</div>

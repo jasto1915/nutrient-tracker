@@ -31,6 +31,29 @@ class Meal {
 
 }
 
+class User{
+  name:string;
+  age: number;
+  gender: string;
+  height: number;
+  weight: number;
+  goal: string;
+  activityLevel: string;
+
+  constructor(name:string="", age: number=0, gender: string="", height: number=0,
+              weight: number=0, activityLevel:string = "", goal: string="") {
+    this.name = name;
+    this.age = age;
+    this.gender = gender;
+    this.height = height;
+    this.weight = weight;
+    this.activityLevel = activityLevel;
+    this.goal = goal;
+  }
+
+
+}
+
 
 @Component({
   selector: 'app-root',
@@ -45,11 +68,14 @@ export class AppComponent {
   textInput = "";
   timeInput = "";
   meal: Meal = new Meal();
+  user: User = new User();
+  mealStatus = ""
+  userStatus = ""
 
   constructor(private db: DatabaseService, private extapi: ExternalAPIService) {
   }
 
-  sendInput(){
+  sendMealInput(){
     let data = {text:this.textInput, time:this.timeInput};
     this.extapi.parseLanguage(data).subscribe((data:any) => {
       this.meal = new Meal(data.name, data.servingQty,data.servingUnit,data.servingWeightGram,
@@ -61,9 +87,18 @@ export class AppComponent {
 
    confirmMeal(){
     this.db.addMeal(this.meal).subscribe((data:any) => {
-
+      this.mealStatus = data.status
 
     })
+
+   }
+
+   sendUserInfo(){
+    this.db.addUserInfo(this.user).subscribe((data:any) => {
+        this.userStatus = data.status
+
+    })
+
    }
 
 

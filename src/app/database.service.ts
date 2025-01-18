@@ -22,6 +22,10 @@ export class DatabaseService {
     return this.http.post(url,meal,httpOptions)
   }
 
+  addUserInfo(info:any){
+    let url = API_URL + "/user/add";
+    return this.http.post(url,info,httpOptions)
+  }
 
 
 }
