@@ -35,7 +35,14 @@ const userSchema = mongoose.Schema({
   goal: {
     type: String,
     required: true,
-  }
+  },
+
+  dailyCalorie: {
+    type: Number,
+    required: true,
+  },
+
+  macronutrients: [{name: String, value: Number}]
 
 })
 
