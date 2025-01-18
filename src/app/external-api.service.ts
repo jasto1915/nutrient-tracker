@@ -17,7 +17,6 @@ export class ExternalAPIService {
 
   parseLanguage(data:any){
     let url = API_URL + "/freeform-input/parse"
-    console.log("sent")
     return this.http.post(url,data,httpOptions);
   }
 

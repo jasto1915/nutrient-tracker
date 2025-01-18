@@ -85,6 +85,35 @@ _Feature milestone_
   - Mile 2
     - build external api to send text input and get back food type [DONE]
     - build routing to send back meal info to display to user [DONE]
+  - Mile 3
+    - add time to meal input [DONE]
+    - fix and clean meal data that is passed to the backend and vice versa [DONE]
+  - Mile 4
+    - create ok button for user to agree to the meals added
+    - send the meal to the database
+  - Mile 5
+    - add interface for user info, which is name, age, gender, height, weight, and goal
+    - setup backend to save user info
+  - Mile 6
+    - Research formula for nutrient intake per goal
+    - compute nutrient goal per day
+    - send the nutrient goal to the front end
+  
+- Nutrient Tracking
+  - Mile 1
+    - create simple display of what has been eaten for the day and their nutrients
+    - connect to the backend and provide the info to the front end
+  - Mile 2
+    - display nutrient accumulation and what is left to reach the daily goal
+    - create history section to dislay which nutrient goals are achieved and which are not per day
+  - Mile 3
+    - create button for daily reset 
+    - create daily reset logic in the backend
+
+- Nutrient Suggestion
+  - Mile 1
+    - place inside the daily tracking
+  
 
 explain about why you structure the project liek that (router, controller, etc.)
 

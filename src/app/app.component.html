@@ -1,4 +1,9 @@
-<div xmlns="http://www.w3.org/1999/html">
+
+<div>
+  <label for="time-input" class="form-label">Select a time:</label>
+  <input type="time" for="time-input" id="time-input" [(ngModel)]="timeInput" class="form-control form-control-sm" required>
+</div>
+<div>
   <label for="food-input" class="form-label">Enter what you ate</label><br/>
   <textarea rows="4" cols="50" name="food-input" id="food-input" [(ngModel)]="textInput" required></textarea>
 </div>
@@ -9,5 +14,10 @@
 <br/>
 <div>
   <h5>Output</h5>
-  <h6>{{text}}</h6>
+  <h6>{{meal.name}}</h6>
+  <h6>{{meal.servingQty}}</h6>
+  <h6>{{meal.servingUnit}}</h6>
+  <h6>{{meal.servingWeightGram}}</h6>
+  <h6>{{meal.calories}}</h6>
+  <h6>{{meal.protein}}</h6>
 </div>

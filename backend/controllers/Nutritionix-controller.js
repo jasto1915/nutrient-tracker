@@ -1,15 +1,21 @@
 
 const axios = require("axios")
 
+function parseMealJSON(response,time){
+  let data = response.data.foods[0]
+  return {name:data.food_name, serving_qty:data.serving_qty,
+  serving_unit:data.serving_unit, serving_weight_grams:data.serving_weight_grams,
+  calories: data.nf_calories, protein: data.nf_protein, time:time }
 
+}
 module.exports = {
 
 
   parseFreeformToMeal: async function (req, res) {
     console.log("received")
-    console.log(req.body.text)
+    let time = req.body.time
     let body = {
-      query: "grape"
+      query: req.body.text
     }
 
     let headers = {
@@ -22,7 +28,8 @@ module.exports = {
     console.log("received 2")
     //console.log(response.data)
     //console.log(response.data.foods[0].food_name)
-    res.send({text: response.data.foods[0].food_name})
+    let result = parseMealJSON(response,time)
+    res.send(result)
 
   }
 }
