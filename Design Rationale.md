@@ -89,8 +89,8 @@ _Feature milestone_
     - add time to meal input [DONE]
     - fix and clean meal data that is passed to the backend and vice versa [DONE]
   - Mile 4
-    - create ok button for user to agree to the meals added
-    - send the meal to the database
+    - create ok button for user to agree to the meals added [DONE]
+    - send the meal to the database [DONE]
   - Mile 5
     - add interface for user info, which is name, age, gender, height, weight, and goal
     - setup backend to save user info

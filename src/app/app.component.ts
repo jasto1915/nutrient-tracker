@@ -10,9 +10,9 @@ class Meal {
   servingQty: number;
   servingUnit: string;
   servingWeightGram: number;
-  time: string;
   protein: number;
   calories: number;
+  time: string;
 
 
   constructor(name:string="", servingQty: number=0,
@@ -58,4 +58,14 @@ export class AppComponent {
     })
 
    }
+
+   confirmMeal(){
+    this.db.addMeal(this.meal).subscribe((data:any) => {
+
+
+    })
+   }
+
+
 }
+

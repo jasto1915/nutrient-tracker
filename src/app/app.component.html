@@ -13,11 +13,12 @@
 <br/>
 <br/>
 <div>
-  <h5>Output</h5>
-  <h6>{{meal.name}}</h6>
-  <h6>{{meal.servingQty}}</h6>
-  <h6>{{meal.servingUnit}}</h6>
-  <h6>{{meal.servingWeightGram}}</h6>
-  <h6>{{meal.calories}}</h6>
-  <h6>{{meal.protein}}</h6>
+  <h5>Meal Input</h5>
+  <h6>name: {{meal.name}}</h6>
+  <h6>serving quantity: {{meal.servingQty}}</h6>
+  <h6>serving unit: {{meal.servingUnit}}</h6>
+  <h6>serving in grams: {{meal.servingWeightGram}}</h6>
+  <h6>calories: {{meal.calories}}</h6>
+  <h6>protein: {{meal.protein}}</h6>
 </div>
+<button (click)="confirmMeal()" class="btn btn-primary">Confirm Meal</button>
