@@ -27,5 +27,10 @@ export class DatabaseService {
     return this.http.post(url,info,httpOptions)
   }
 
+  getDailyNutrientGoal(){
+    let url = API_URL + "/user/getNutrientGoal";
+    return this.http.get(url)
+  }
+
 
 }

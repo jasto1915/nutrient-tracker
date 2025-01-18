@@ -75,3 +75,19 @@
 <div>
   <h6>{{userStatus}}</h6>
 </div>
+
+<br/>
+<br/>
+
+<div>
+  @if(goalStatus == "success"){
+  <h3>Goal: {{goal}}</h3>
+  @for (nutrient of nutrientList; track nutrient){
+  <label [for]="nutrient.name">{{nutrient.name}} progress:</label><br/>
+    <progress [id]="nutrient.name" value="50" [max]="nutrient.value">50</progress>
+    <br/>
+  }
+  }@else{
+    <h3>Please add a user first</h3>
+  }
+</div>

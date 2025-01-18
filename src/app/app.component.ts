@@ -71,8 +71,26 @@ export class AppComponent {
   user: User = new User();
   mealStatus = ""
   userStatus = ""
+  goalStatus = ""
+  goal = ""
+  nutrientList: any[] = [];
 
   constructor(private db: DatabaseService, private extapi: ExternalAPIService) {
+  }
+
+  ngOnInit(){
+    this.db.getDailyNutrientGoal().subscribe((data:any) => {
+      if(data.status == "success") {
+        console.log("sent")
+        this.goalStatus = "success"
+        this.goal = data.goal
+        console.log(this.goal)
+        this.nutrientList = data.nutrients
+      }else{
+        this.goalStatus = "failure"
+        console.log(data)
+      }
+    })
   }
 
   sendMealInput(){
@@ -94,10 +112,26 @@ export class AppComponent {
    }
 
    sendUserInfo(){
-    this.db.addUserInfo(this.user).subscribe((data:any) => {
-        this.userStatus = data.status
-
+    this.db.addUserInfo(this.user).subscribe((data:any) =>
+    {
+      this.userStatus = data.status
     })
+
+     this.db.getDailyNutrientGoal().subscribe((data:any) => {
+
+       if(data.status == "success") {
+         console.log("sent")
+         this.goalStatus = "success"
+         this.nutrientList = data.nutrients
+         this.goal = data.goal
+       }else{
+         this.goalStatus = "failure"
+         console.log(data)
+       }
+
+     })
+
+
 
    }
 
