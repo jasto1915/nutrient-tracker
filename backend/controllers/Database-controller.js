@@ -1,7 +1,10 @@
 
-const Meal = require('../model/Meal');
-const User = require('../model/User');
+const Meal = require('../model/Meal')
+const User = require('../model/User')
+const Day = require('../model/Day')
 
+let dayCount = 0
+let currentDate = new Date(2025,1,20)
 
 function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goal){
 
@@ -79,9 +82,24 @@ module.exports = {
       Meal(body)
       await mealDoc.save()
 
+      if(dayCount === 0){
+        let dayDoc = new
+        Day({date:currentDate, calorieProgress: body.calories, proteinProgress: body.protein,
+          fatsProgress:0,carbsProgress:0, mealList: [mealDoc._id]})
+        await dayDoc.save()
+        dayCount += 1
+
+      }else{
+        currentDate.setDate(currentDate.getDate() + (dayCount-1))
+        let currentDay = await Day.findOne({date:currentDate})
+        currentDay.mealList.push(mealDoc._id)
+        await currentDay.save()
+      }
+
       res.send({status:"success"})
 
     }catch(err){
+      console.log(err)
       res.send({status:"failed, please try again"})
     }
 
