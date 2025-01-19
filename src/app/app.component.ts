@@ -88,6 +88,7 @@ export class AppComponent {
   userStatus = ""
   userExists = false
   goal = ""
+  historyList:any[] = []
   nutrientList:any[] = [];
   proteinProgress = 0
   calorieProgress = 0
@@ -187,7 +188,20 @@ export class AppComponent {
           this.nutrientList.forEach(nutrient => {
             nutrient.value = 0
           })
+
+          this.getMealHistory()
         }
+    })
+  }
+
+  getMealHistory(){
+    this.db.getMealHistory().subscribe((data:any) => {
+      if(data.status == "success"){
+        console.log('here')
+        this.historyList = data.historyList
+      }else{
+        console.log("error")
+      }
     })
   }
 

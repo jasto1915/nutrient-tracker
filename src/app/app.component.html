@@ -135,3 +135,20 @@
     </ul>
   }
 </div>
+
+<br/>
+<br/>
+<div>
+  <h4>History</h4>
+  @for(day of historyList; track day){
+    <ul>
+      <li>{{day.date}}
+        <ul>
+          @for(nutrient of day.macronutrientProgress; track nutrient){
+          <li>{{nutrient.name}}: {{nutrient.value}}</li>
+          }
+        </ul>
+      </li>
+    </ul>
+  }
+</div>

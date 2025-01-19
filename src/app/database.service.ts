@@ -47,5 +47,10 @@ export class DatabaseService {
     return this.http.get(url)
   }
 
+  getMealHistory(){
+    let url = API_URL + "/user/getMealHistory";
+    return this.http.get(url)
+  }
+
 
 }

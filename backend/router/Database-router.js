@@ -15,4 +15,6 @@ router.get("/user/getMealProgress", databaseController.getDailyMealProgress)
 
 router.get("/user/nextDay", databaseController.nextDay)
 
+router.get("/user/getMealHistory", databaseController.getMealHistory)
+
 module.exports = router;

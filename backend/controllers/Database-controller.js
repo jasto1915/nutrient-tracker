@@ -227,6 +227,7 @@ module.exports = {
 
   nextDay: async function(req,res){
     try {
+      console.log('here')
       dayCount += 1
       currentDate.setDate(currentDate.getDate() + 1)
       let dayDoc = new
@@ -238,11 +239,25 @@ module.exports = {
           {name: "fats", value: 0},
         ], mealList: []
       })
-
+      await dayDoc.save()
+      console.log("here1")
       res.send({status:"success"})
 
     }catch(err){
-      console.log(err)
+      console.log("err")
+    }
+
+  },
+
+  getMealHistory: async function(req,res){
+    console.log("here2")
+    try {
+      let dayList = await Day.find({})
+
+      res.send({status: "success", historyList: dayList})
+
+    }catch(err){
+      console.log("err")
     }
 
   }
