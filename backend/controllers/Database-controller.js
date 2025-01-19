@@ -90,10 +90,8 @@ module.exports = {
   addUserInfo: async function (req, res) {
     try{
       let user = req.body
-
-      let dailyCalorie = calculateTotalDailyCalories(user.gender,
-        user.weight, user.height, user.age, user.activityLevel,user.goal)
-
+      let dailyCalorie =
+        calculateTotalDailyCalories(user.gender, user.weight, user.height, user.age, user.activityLevel,user.goal)
       let [protein,carbs,fats] = calculateMacronutrients(dailyCalorie,user.goal)
 
       let data =
@@ -104,14 +102,13 @@ module.exports = {
           {name: "fats", value: fats}]
         }
 
-      let userDoc = new
-      User(data)
+      let userDoc = new User(data)
       await userDoc.save()
 
       res.send({status:"success"})
 
     }catch(err){
-      res.send({status:"failed, please try again"})
+      res.send({status:"failed", msg:"please try again"})
     }
 
 
@@ -122,15 +119,14 @@ module.exports = {
       let data = await User.find({})
       if(data != null) {
         let calorie = {name: "Calorie", value: data[0].dailyCalorie}
-        let nutrients =
-          [calorie, ...data[0].macronutrients]
+        let nutrients = [calorie, ...data[0].macronutrients]
         res.send({status:"success",nutrients: nutrients, goal:data[0].goal})
 
       }else{
-        res.send({status:"failed, there is no user"})
+        res.send({status:"failed", msg:"there is no user"})
       }
     }catch(err){
-      res.send({status:"failed, please try again"})
+      res.send({status:"failed", msg:"please try again"})
     }
   }
 }

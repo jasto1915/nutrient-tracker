@@ -71,7 +71,7 @@ export class AppComponent {
   user: User = new User();
   mealStatus = ""
   userStatus = ""
-  goalStatus = ""
+  userExists = false
   goal = ""
   nutrientList: any[] = [];
 
@@ -81,11 +81,11 @@ export class AppComponent {
   ngOnInit(){
     this.db.getDailyNutrientGoal().subscribe((data:any) => {
       if(data.status == "success") {
-        this.goalStatus = "success"
+        this.userExists = true
         this.goal = data.goal
         this.nutrientList = data.nutrients
       }else{
-        this.goalStatus = "failure"
+        this.userExists = false
       }
     })
   }
@@ -117,11 +117,11 @@ export class AppComponent {
      this.db.getDailyNutrientGoal().subscribe((data:any) => {
 
        if(data.status == "success") {
-         this.goalStatus = "success"
+         this.userExists = true
          this.nutrientList = data.nutrients
          this.goal = data.goal
        }else{
-         this.goalStatus = "failure"
+         this.userExists = false
        }
 
      })

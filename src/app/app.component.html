@@ -1,4 +1,4 @@
-
+@if(userExists){
 <div>
   <label for="time-input" class="form-label">Select a time:</label>
   <input type="time" for="time-input" id="time-input" [(ngModel)]="timeInput" class="form-control form-control-sm" required>
@@ -25,6 +25,9 @@
 <div>
   <h5>{{mealStatus}}</h5>
 </div>
+}@else{
+  <h5>Please input user first</h5>
+}
 
 
 <br/>
@@ -80,7 +83,7 @@
 <br/>
 
 <div>
-  @if(goalStatus == "success"){
+  @if(userExists){
   <h3>Goal: {{goal}}</h3>
   @for (nutrient of nutrientList; track nutrient){
   <label [for]="nutrient.name">{{nutrient.name}} progress:</label><br/>
