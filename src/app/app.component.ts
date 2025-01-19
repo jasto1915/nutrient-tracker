@@ -74,20 +74,17 @@ export class AppComponent {
   userExists = false
   goal = ""
   nutrientList: any[] = [];
+  proteinProgress = 0
+  calorieProgress = 0
+  mealList: any[] = [{name: "None", calories:"None",protein:"None"}];
 
-  constructor(private db: DatabaseService, private extapi: ExternalAPIService) {
-  }
+  constructor(private db: DatabaseService, private extapi: ExternalAPIService) {}
 
   ngOnInit(){
-    this.db.getDailyNutrientGoal().subscribe((data:any) => {
-      if(data.status == "success") {
-        this.userExists = true
-        this.goal = data.goal
-        this.nutrientList = data.nutrients
-      }else{
-        this.userExists = false
-      }
-    })
+    this.getDailyNutrientGoal()
+    this.getDailyNutrientProgress()
+    this.getDailyMealProgress()
+
   }
 
   sendMealInput(){
@@ -100,20 +97,28 @@ export class AppComponent {
 
    }
 
-   confirmMeal(){
+  confirmMeal(){
     this.db.addMeal(this.meal).subscribe((data:any) => {
       this.mealStatus = data.status
 
     })
 
+    this.getDailyMealProgress()
+    this.getDailyNutrientProgress()
+
    }
 
-   sendUserInfo(){
+  sendUserInfo(){
     this.db.addUserInfo(this.user).subscribe((data:any) =>
     {
       this.userStatus = data.status
     })
 
+     this.getDailyNutrientGoal()
+
+   }
+
+  getDailyNutrientGoal(){
      this.db.getDailyNutrientGoal().subscribe((data:any) => {
 
        if(data.status == "success") {
@@ -125,10 +130,26 @@ export class AppComponent {
        }
 
      })
-
-
-
    }
+
+  getDailyNutrientProgress(){
+    this.db.getDailyNutrientProgress().subscribe((data:any) => {
+      if(data.status == "success") {
+        this.calorieProgress = data.calories
+        this.proteinProgress = data.protein
+      }
+    })
+   }
+
+  getDailyMealProgress(){
+    this.db.getDailyMealProgress().subscribe((data:any) => {
+      if(data.status == "success") {
+        console.log("hi")
+        console.log(data.mealList)
+        this.mealList = data.mealList
+      }
+    })
+  }
 
 
 }

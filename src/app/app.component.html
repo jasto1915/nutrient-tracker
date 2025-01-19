@@ -91,6 +91,24 @@
     <br/>
   }
   }@else{
-    <h3>Please add a user first</h3>
+    <h3>Goal target is empty; please add user</h3>
   }
+</div>
+
+<br/>
+<br/>
+<div>
+  <h4>Breakfast</h4>
+  @for(meal of mealList; track meal){
+  <ul>
+    <li>{{meal.name}}
+      <ul>
+        <li>{{meal.calories}}</li>
+        <li>{{meal.protein}}</li>
+      </ul>
+    </li>
+  </ul>
+  }
+  <h4>Lunch</h4>
+  <h4>Dinner</h4>
 </div>

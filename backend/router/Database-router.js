@@ -9,4 +9,8 @@ router.post("/user/add", databaseController.addUserInfo)
 
 router.get("/user/getNutrientGoal", databaseController.getNutrientGoal)
 
+router.get("/user/getNutrientProgress", databaseController.getDailyNutrientProgress)
+
+router.get("/user/getMealProgress", databaseController.getDailyMealProgress)
+
 module.exports = router;

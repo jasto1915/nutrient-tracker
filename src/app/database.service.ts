@@ -32,5 +32,15 @@ export class DatabaseService {
     return this.http.get(url)
   }
 
+  getDailyNutrientProgress(){
+    let url = API_URL + "/user/getNutrientProgress";
+    return this.http.get(url)
+  }
+
+  getDailyMealProgress(){
+    let url = API_URL + "/user/getMealProgress";
+    return this.http.get(url)
+  }
+
 
 }

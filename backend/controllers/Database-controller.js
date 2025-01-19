@@ -128,5 +128,46 @@ module.exports = {
     }catch(err){
       res.send({status:"failed", msg:"please try again"})
     }
+  },
+
+
+  getDailyNutrientProgress: async function(req,res){
+    try{
+      let data = await Meal.find({})
+      let calories = 0
+      let protein = 0
+
+      if(data != null) {
+        for(let meal in data){
+          calories += meal.calories
+          protein += meal.protein
+        }
+      }
+
+      res.send({status:"success", calories:calories, protein:protein})
+
+
+    }catch(err){
+      res.send({status:"failed"})
+    }
+
+
+  },
+
+  getDailyMealProgress: async function(req,res){
+    try{
+      let data = await Meal.find({})
+
+      if(data != null) {
+        res.send({status:"success", mealList: data})
+      }
+
+    }catch(err){
+      res.send({status:"failed"})
+    }
   }
+
+
+
+
 }
