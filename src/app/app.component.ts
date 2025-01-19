@@ -178,6 +178,19 @@ export class AppComponent {
     })
   }
 
+  nextDay(){
+    this.db.nextDay().subscribe((data:any) => {
+        if(data.status === "success"){
+          this.breakfast = [{name: "None", calories:"None",protein:"None"}]
+          this.lunch = [{name: "None", calories:"None",protein:"None"}]
+          this.dinner = [{name: "None", calories:"None",protein:"None"}]
+          this.nutrientList.forEach(nutrient => {
+            nutrient.value = 0
+          })
+        }
+    })
+  }
+
   // displayDailyGoalAndProgress(){
   //   this.db.getDailyNutrientGoal().subscribe((data:any) => {
   //

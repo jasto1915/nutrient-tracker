@@ -42,5 +42,10 @@ export class DatabaseService {
     return this.http.get(url)
   }
 
+  nextDay(){
+    let url = API_URL + "/user/nextDay";
+    return this.http.get(url)
+  }
+
 
 }

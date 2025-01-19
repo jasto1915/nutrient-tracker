@@ -180,7 +180,6 @@ module.exports = {
     }
   },
 
-
   getDailyNutrientProgress: async function(req,res){
     try{
       let data = await Day.findOne({date:currentDate})
@@ -224,8 +223,29 @@ module.exports = {
     }catch(err){
       res.send({status:"failed"})
     }
-  }
+  },
 
+  nextDay: async function(req,res){
+    try {
+      dayCount += 1
+      currentDate.setDate(currentDate.getDate() + 1)
+      let dayDoc = new
+      Day({
+        date: currentDate, macronutrientProgress: [
+          {name: "calories", value: 0},
+          {name: "protein", value: 0},
+          {name: "carbs", value: 0},
+          {name: "fats", value: 0},
+        ], mealList: []
+      })
+
+      res.send({status:"success"})
+
+    }catch(err){
+      console.log(err)
+    }
+
+  }
 
 
 
