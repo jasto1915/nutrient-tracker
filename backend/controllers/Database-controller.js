@@ -4,13 +4,14 @@ const User = require('../model/User')
 const Day = require('../model/Day')
 
 let dayCount = 0
-let currentDate = new Date(2025,1,20)
+let currentDate = new Date(2025,0,20)
+let dateUpdated = false
 
 function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goal){
 
   let result = 0
 
-  if(gender == "Male"){
+  if(gender === "Male"){
     result = 10 * weight + 6.25 * height - 5 * age + 5
 
   }else{
@@ -48,7 +49,7 @@ function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goa
 function calculateMacronutrients(calories, goal){
   let result
 
-  if(goal == "Gain Weight"){
+  if(goal === "Gain Weight"){
     //35p - 45c - 20f
     let protein = calories * 0.35 / 4
     let carbs = calories * 0.45 / 4
@@ -82,19 +83,23 @@ module.exports = {
       Meal(body)
       await mealDoc.save()
 
-      if(dayCount === 0){
-        let dayDoc = new
-        Day({date:currentDate, calorieProgress: body.calories, proteinProgress: body.protein,
-          fatsProgress:0,carbsProgress:0, mealList: [mealDoc._id]})
-        await dayDoc.save()
-        dayCount += 1
-
-      }else{
-        currentDate.setDate(currentDate.getDate() + (dayCount-1))
-        let currentDay = await Day.findOne({date:currentDate})
-        currentDay.mealList.push(mealDoc._id)
-        await currentDay.save()
+      if(!dateUpdated) {
+        currentDate.setDate(currentDate.getDate() + (dayCount - 1)) //change currentDate object
+        dateUpdated = true
       }
+      let currentDay = await Day.findOne({date:currentDate})
+
+      currentDay.mealList.push(mealDoc._id)
+      currentDay.macronutrientProgress.forEach(
+        (item) => item.name === "calories" ? item.value += body.calories :
+        item.name === "protein" ? item.value += body.protein : item )
+      //currentDay.macronutrientProgress.push({name:"protein", value:body.protein})
+      //not good for extensibility
+      // forEach(
+      //   (item) => item.name === "calories" ? item.value += body.calories :
+      // item.name === "protein" ? item.value += body.protein : item )
+      await currentDay.save()
+
 
       res.send({status:"success"})
 
@@ -123,6 +128,16 @@ module.exports = {
       let userDoc = new User(data)
       await userDoc.save()
 
+      let dayDoc = new
+      Day({date:currentDate, macronutrientProgress:[
+          {name: "calories", value: 0},
+          {name: "protein", value: 0},
+          {name: "carbs", value: 0},
+          {name: "fats", value: 0},
+        ], mealList: []})
+      await dayDoc.save()
+      dayCount += 1
+
       res.send({status:"success"})
 
     }catch(err){
@@ -134,15 +149,32 @@ module.exports = {
 
   getNutrientGoal: async function (req, res) {
     try {
-      let data = await User.find({})
-      if(data != null) {
-        let calorie = {name: "Calorie", value: data[0].dailyCalorie}
-        let nutrients = [calorie, ...data[0].macronutrients]
-        res.send({status:"success",nutrients: nutrients, goal:data[0].goal})
+      let userData = await User.findOne({})
+      let calorie
+      let nutrients
+
+      if(userData != null) {
+        calorie = {name: "calories", value: userData.dailyCalorie}
+        nutrients = [calorie, ...userData.macronutrients]
+
+        let dayData = await Day.findOne({date:currentDate})
+        let finalResult = []
+        for(let progress of dayData.macronutrientProgress){
+          for(let nutrient of nutrients){
+            if(nutrient.name === progress.name){
+              finalResult.push({name:nutrient.name, value: progress.value,max:nutrient.value})
+              break
+            }
+          }
+        }
+
+        console.log(finalResult)
+        res.send({status:"success",nutrients: finalResult, goal:userData.goal})
 
       }else{
         res.send({status:"failed", msg:"there is no user"})
       }
+
     }catch(err){
       res.send({status:"failed", msg:"please try again"})
     }
@@ -151,34 +183,24 @@ module.exports = {
 
   getDailyNutrientProgress: async function(req,res){
     try{
-      let data = await Meal.find({})
-      let calories = 0
-      let protein = 0
+      let data = await Day.findOne({date:currentDate})
 
-      if(data != null) {
-        for(let meal in data){
-          calories += meal.calories
-          protein += meal.protein
-        }
-      }
-
-      res.send({status:"success", calories:calories, protein:protein})
-
+      res.send({status:"success", calories:data.calorieProgress, protein:data.proteinProgress})
 
     }catch(err){
       res.send({status:"failed"})
     }
 
-
   },
 
   getDailyMealProgress: async function(req,res){
     try{
-      let data = await Meal.find({})
 
-      if(data != null) {
-        res.send({status:"success", mealList: data})
-      }
+      let data = await Day.findOne({date:currentDate}).populate("mealList")
+      console.log("yay")
+      console.log(data.mealList)
+      res.send({status:"success", mealList: data.mealList})
+
 
     }catch(err){
       res.send({status:"failed"})

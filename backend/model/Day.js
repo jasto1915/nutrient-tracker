@@ -7,25 +7,12 @@ const daySchema = mongoose.Schema({
     required: true,
   },
 
-  calorieProgress: {
-    type: Number,
-    required: true,
-  },
+  macronutrientProgress: [{
+    name: String,
+    value: Number,
+  }],
 
-  proteinProgress: {
-    type: String,
-    required: true,
-  },
 
-  fatsProgress: {
-    type: Number,
-    required: true,
-  },
-
-  carbsProgress: {
-    type: Number,
-    required: true,
-  },
   mealList: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Meal'

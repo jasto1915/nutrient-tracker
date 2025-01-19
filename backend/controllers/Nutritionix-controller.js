@@ -12,7 +12,6 @@ module.exports = {
 
 
   parseFreeformToMeal: async function (req, res) {
-    console.log("received")
     let time = req.body.time
     let body = {
       query: req.body.text
@@ -25,7 +24,6 @@ module.exports = {
 
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
     let response = await axios.post(url,body, {headers:headers})
-    console.log("received 2")
     //console.log(response.data)
     //console.log(response.data.foods[0].food_name)
     let result = parseMealJSON(response,time)
