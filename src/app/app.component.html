@@ -88,6 +88,7 @@
   @for (nutrient of nutrientList; track nutrient){
   <label [for]="nutrient.name">{{nutrient.name}} progress:</label><br/>
     <progress [id]="nutrient.name" [value]="nutrient.value" [max]="nutrient.max">{{nutrient.value}}</progress>
+    <h6>{{nutrient.value}}/{{nutrient.max}}</h6>
     <br/>
   }
   }@else{
@@ -99,7 +100,7 @@
 <br/>
 <div>
   <h4>Breakfast</h4>
-  @for(meal of mealList; track meal){
+  @for(meal of breakfast; track meal){
   <ul>
     <li>{{meal.name}}
       <ul>
@@ -110,5 +111,25 @@
   </ul>
   }
   <h4>Lunch</h4>
+  @for(meal of lunch; track meal){
+    <ul>
+      <li>{{meal.name}}
+        <ul>
+          <li>{{meal.calories}}</li>
+          <li>{{meal.protein}}</li>
+        </ul>
+      </li>
+    </ul>
+  }
   <h4>Dinner</h4>
+  @for(meal of dinner; track meal){
+    <ul>
+      <li>{{meal.name}}
+        <ul>
+          <li>{{meal.calories}}</li>
+          <li>{{meal.protein}}</li>
+        </ul>
+      </li>
+    </ul>
+  }
 </div>

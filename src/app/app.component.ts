@@ -92,6 +92,9 @@ export class AppComponent {
   proteinProgress = 0
   calorieProgress = 0
   mealList: any[] = [{name: "None", calories:"None",protein:"None"}];
+  breakfast:any[] = [{name: "None", calories:"None",protein:"None"}]
+  lunch:any[] = [{name: "None", calories:"None",protein:"None"}]
+  dinner:any[] = [{name: "None", calories:"None",protein:"None"}]
 
   constructor(private db: DatabaseService, private extapi: ExternalAPIService) {}
 
@@ -163,8 +166,14 @@ export class AppComponent {
   getDailyMealProgress(){
     this.db.getDailyMealProgress().subscribe((data:any) => {
       if(data.status == "success") {
-        console.log(data.mealList)
-        this.mealList = data.mealList
+        console.log(data.breakfast)
+        console.log(data.lunch)
+        console.log(data.dinner)
+        this.breakfast= data.breakfast
+        this.lunch = data.lunch
+        this.dinner = data.dinner
+      }else{
+        console.log("error")
       }
     })
   }

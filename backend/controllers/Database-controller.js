@@ -168,7 +168,7 @@ module.exports = {
           }
         }
 
-        console.log(finalResult)
+        //console.log(finalResult)
         res.send({status:"success",nutrients: finalResult, goal:userData.goal})
 
       }else{
@@ -197,9 +197,28 @@ module.exports = {
     try{
 
       let data = await Day.findOne({date:currentDate}).populate("mealList")
-      console.log("yay")
-      console.log(data.mealList)
-      res.send({status:"success", mealList: data.mealList})
+      let breakfast = []
+      let lunch = []
+      let dinner = []
+
+      //console.log("started")
+      //[{meal},{meal},...]
+      for(let meal of data.mealList){
+        let hour = parseInt(meal.time.slice(0,2))
+        let minute = parseInt(meal.time.slice(3))
+
+        //00.00 - 10.59 | 11.00 - 16.59 | 17.00 - 23.59
+        if(hour >= 0 && (hour <= 10 && minute <= 59)){
+          breakfast.push(meal)
+        }else if(hour >= 11 && (hour <= 16 && minute <= 59)){
+          lunch.push(meal)
+        }else if(hour >= 17 && (hour <= 23 && minute <= 59)){
+          dinner.push(meal)
+        }
+      }
+
+
+      res.send({status:"success", breakfast: breakfast, lunch: lunch, dinner:dinner})
 
 
     }catch(err){
