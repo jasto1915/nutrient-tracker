@@ -87,7 +87,7 @@
   <h3>Goal: {{goal}}</h3>
   @for (nutrient of nutrientList; track nutrient){
   <label [for]="nutrient.name">{{nutrient.name}} progress:</label><br/>
-    <progress [id]="nutrient.name" value="50" [max]="nutrient.value">50</progress>
+    <progress [id]="nutrient.name" [value]="nutrient.value" [max]="nutrient.max">{{nutrient.value}}</progress>
     <br/>
   }
   }@else{

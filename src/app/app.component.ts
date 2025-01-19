@@ -54,6 +54,21 @@ class User{
 
 }
 
+class Nutrient{
+
+  name: string;
+  value:number;
+  max: number;
+
+  constructor(name:string="",value:number=0, max:number=0){
+    this.name = name;
+    this.value = value;
+    this.max = max;
+    }
+
+}
+
+
 
 @Component({
   selector: 'app-root',
@@ -73,7 +88,7 @@ export class AppComponent {
   userStatus = ""
   userExists = false
   goal = ""
-  nutrientList: any[] = [];
+  nutrientList:any[] = [];
   proteinProgress = 0
   calorieProgress = 0
   mealList: any[] = [{name: "None", calories:"None",protein:"None"}];
@@ -81,8 +96,7 @@ export class AppComponent {
   constructor(private db: DatabaseService, private extapi: ExternalAPIService) {}
 
   ngOnInit(){
-    this.getDailyNutrientGoal()
-    this.getDailyNutrientProgress()
+    this.getDailyNutrientGoalAndProgress()
     this.getDailyMealProgress()
 
   }
@@ -100,12 +114,10 @@ export class AppComponent {
   confirmMeal(){
     this.db.addMeal(this.meal).subscribe((data:any) => {
       this.mealStatus = data.status
+      this.getDailyMealProgress()
+      this.getDailyNutrientGoalAndProgress()
 
     })
-
-    this.getDailyMealProgress()
-    this.getDailyNutrientProgress()
-
    }
 
   sendUserInfo(){
@@ -114,16 +126,19 @@ export class AppComponent {
       this.userStatus = data.status
     })
 
-     this.getDailyNutrientGoal()
+     this.getDailyNutrientGoalAndProgress()
 
    }
 
-  getDailyNutrientGoal(){
+  getDailyNutrientGoalAndProgress(){
      this.db.getDailyNutrientGoal().subscribe((data:any) => {
 
        if(data.status == "success") {
          this.userExists = true
-         this.nutrientList = data.nutrients
+         this.nutrientList = []
+         for(let nutrient of data.nutrients){
+           this.nutrientList.push(new Nutrient(nutrient.name,nutrient.value,nutrient.max));
+         }
          this.goal = data.goal
        }else{
          this.userExists = false
@@ -132,24 +147,62 @@ export class AppComponent {
      })
    }
 
-  getDailyNutrientProgress(){
-    this.db.getDailyNutrientProgress().subscribe((data:any) => {
-      if(data.status == "success") {
-        this.calorieProgress = data.calories
-        this.proteinProgress = data.protein
-      }
-    })
-   }
+  // getDailyNutrientProgress(){
+  //   this.db.getDailyNutrientProgress().subscribe((data:any) => {
+  //     if(data.status == "success") {
+  //       console.log("hiii")
+  //       this.result = {calories: data.calories, protein: data.protein}
+  //       console.log(this.result)
+  //     }else{
+  //       console.log("err")
+  //     }
+  //   })
+  //   console.log("2")
+  //  }
 
   getDailyMealProgress(){
     this.db.getDailyMealProgress().subscribe((data:any) => {
       if(data.status == "success") {
-        console.log("hi")
         console.log(data.mealList)
         this.mealList = data.mealList
       }
     })
   }
+
+  // displayDailyGoalAndProgress(){
+  //   this.db.getDailyNutrientGoal().subscribe((data:any) => {
+  //
+  //          if(data.status == "success") {
+  //            this.userExists = true
+  //            for(let nutrient of data.nutrients){
+  //              this.nutrientList.push(new Nutrient(nutrient.name,nutrient.value));
+  //            }
+  //            this.goal = data.goal
+  //          }else{
+  //            this.userExists = false
+  //          }
+  //
+  //        })
+  //   this.db.getDailyNutrientProgress().subscribe((data:any) => {
+  //         if(data.status == "success") {
+  //           this.result = {calories: data.calories, protein: data.protein}
+  //         }else{
+  //           console.log("err")
+  //         }
+  //       })
+  //
+  //   // for(const [key,value] of Object.entries(this.result)){
+  //   //   for(let nutrient of this.nutrientList){
+  //   //     if(nutrient.name == key){
+  //   //       nutrient.value += value
+  //   //       break
+  //   //     }
+  //   //   }
+  //   // }
+  //   console.log(this.result)
+  //   console.log(this.nutrientList)
+  //
+  // }
 
 
 }
