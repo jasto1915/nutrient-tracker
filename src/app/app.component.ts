@@ -90,6 +90,7 @@ export class AppComponent {
   goal = ""
   historyList:any[] = []
   nutrientList:any[] = [];
+  suggestionList:any[]=[{name: "None", calories:0,protein:0,carbs:0,fats:0}]
   proteinProgress = 0
   calorieProgress = 0
   mealList: any[] = [{name: "None", calories:"None",protein:"None"}];
@@ -202,6 +203,12 @@ export class AppComponent {
       }else{
         console.log("error")
       }
+    })
+  }
+
+  suggestMeal(){
+    this.extapi.suggestMeal().subscribe((data:any) => {
+        this.suggestionList = data.suggestionList
     })
   }
 

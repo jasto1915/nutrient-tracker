@@ -135,6 +135,17 @@
     </ul>
   }
 </div>
+<div>
+  <h4>Meal Suggestion</h4>
+  @for(meal of suggestionList; track meal){
+    <h5>name: {{meal.title}}</h5>
+    <h6>calories: {{meal.calories}}</h6>
+    <h6>protein: {{meal.protein}}</h6>
+    <h6>carbs: {{meal.carbs}}</h6>
+    <h6>fat: {{meal.fat}}</h6>
+  }
+</div>
+<button (click)="suggestMeal()" class="btn btn-primary">Suggest Meal</button>
 
 <br/>
 <br/>

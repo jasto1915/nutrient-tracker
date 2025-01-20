@@ -20,4 +20,9 @@ export class ExternalAPIService {
     return this.http.post(url,data,httpOptions);
   }
 
+  suggestMeal(){
+    let url = API_URL + "/suggestion/suggestMeal"
+    return this.http.get(url)
+  }
+
 }
