@@ -181,4 +181,8 @@ To execute the project, clone the project to your favorite IDE. Then, open up yo
 is 27017 or 127.0.0.1:27017 (the long version). Then, you can just execute the App.js file, and open localhost:8080 on your browser. 
 Thanks!
 
+_note_: I decided not to use firebase, because after deeper research, firebase doesn't have native support for mongodb. It's
+documentation also seems to separate front and back end, and researching further is limited by the time constraint I have. Hence,
+I decide to stick to the deployment method of the code from github.
+
 
