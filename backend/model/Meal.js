@@ -32,6 +32,16 @@ const mealSchema = mongoose.Schema({
     required: true,
   },
 
+  carbs: {
+    type: Number,
+    required: true,
+  },
+
+  fats:{
+    type: Number,
+    required: true,
+  },
+
   time: {
     type: String,
     required: true,

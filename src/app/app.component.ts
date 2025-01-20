@@ -12,12 +12,15 @@ class Meal {
   servingWeightGram: number;
   protein: number;
   calories: number;
+  fats: number;
+  carbs: number;
   time: string;
 
 
   constructor(name:string="", servingQty: number=0,
               servingUnit: string="", servingWeightGram: number=0
-              ,protein: number=0, calories: number=0,time:string="")
+              ,protein: number=0, calories: number=0, carbs:number=0,
+              fats:number=0,time:string="")
   {
     this.name = name;
     this.servingQty = servingQty;
@@ -26,6 +29,8 @@ class Meal {
     this.time = time;
     this.protein = protein;
     this.calories = calories;
+    this.fats = fats;
+    this.carbs = carbs;
 
   }
 
@@ -79,55 +84,72 @@ class Nutrient{
 })
 
 export class AppComponent {
-  text = 'DeepNeuron-OnHit-Stage2';
   textInput = "";
   timeInput = "";
-  meal: Meal = new Meal();
   user: User = new User();
   mealStatus = ""
-  userStatus = ""
   userExists = false
   goal = ""
+
+  inputMealList: Meal[] = [new Meal()];
   historyList:any[] = []
-  nutrientList:any[] = [];
+  nutrientList:any[] = []
   suggestionList:any[]=[{name: "None", calories:0,protein:0,carbs:0,fats:0}]
-  proteinProgress = 0
-  calorieProgress = 0
-  mealList: any[] = [{name: "None", calories:"None",protein:"None"}];
+  mealList: any[] = [{name: "None", calories:"None",protein:"None"}]
   breakfast:any[] = [{name: "None", calories:"None",protein:"None"}]
   lunch:any[] = [{name: "None", calories:"None",protein:"None"}]
   dinner:any[] = [{name: "None", calories:"None",protein:"None"}]
 
+  proteinProgress = 0
+  calorieProgress = 0
+
+
   constructor(private db: DatabaseService, private extapi: ExternalAPIService) {}
 
   ngOnInit(){
-    this.getDailyNutrientGoalAndProgress()
-    this.getDailyMealProgress()
+    this.getNutrientGoalAndProgress()
+    this.getMealProgress()
 
   }
 
   sendMealInput(){
     let data = {text:this.textInput, time:this.timeInput};
-    this.extapi.parseLanguage(data).subscribe((data:any) => {
-      this.meal = new Meal(data.name, data.servingQty,data.servingUnit,data.servingWeightGram,
-        data.protein,data.calories,data.time);
+    this.extapi.parseLanguage(data).subscribe((dataList:any) => {
+      if(dataList.status == "success") {
+        this.inputMealList = []
+        for (let data of dataList.meals) {
+          this.inputMealList.push(new Meal(data.name, data.servingQty, data.servingUnit, data.servingWeightGram,
+            data.protein, data.calories, data.carbs, data.fats, data.time))
+        }
+      }else{
+        console.log(dataList.msg)
+      }
 
     })
 
    }
 
-   addMeal(index:number){
+  addMeal(index:number){
+    this.inputMealList = []
     let data = this.suggestionList[index]
-     this.meal = new Meal(data.title, 1,"plate",0,
-       parseInt(data.protein),parseInt(data.calories),this.timeInput);
+     this.inputMealList.push(new Meal(data.title, 1,"plate",0,
+       parseInt(data.protein),parseInt(data.calories),parseInt(data.carbs), parseInt(data.fat),this.timeInput));
     this.confirmMeal()
    }
 
   confirmMeal(){
-    this.db.addMeal(this.meal).subscribe((data:any) => {
+    this.db.addMeal(this.inputMealList).subscribe((data:any) => {
       this.mealStatus = data.status
-      this.getDailyMealProgress()
-      this.getDailyNutrientGoalAndProgress()
+      if(data.status == "success"){
+        this.inputMealList = [new Meal()]
+        this.timeInput = ""
+        this.mealStatus = ""
+        this.suggestionList = [{name: "None", calories:0,protein:0,carbs:0,fats:0}]
+
+      }
+
+      this.getMealProgress()
+      this.getNutrientGoalAndProgress()
 
     })
    }
@@ -135,15 +157,17 @@ export class AppComponent {
   sendUserInfo(){
     this.db.addUserInfo(this.user).subscribe((data:any) =>
     {
-      this.userStatus = data.status
-    })
+      if(data.status === "success"){
+        this.userExists = true
+        this.getNutrientGoalAndProgress()
+      }
 
-     this.getDailyNutrientGoalAndProgress()
+    })
 
    }
 
-  getDailyNutrientGoalAndProgress(){
-     this.db.getDailyNutrientGoal().subscribe((data:any) => {
+  getNutrientGoalAndProgress(){
+     this.db.getNutrientGoalAndProgress().subscribe((data:any) => {
 
        if(data.status == "success") {
          this.userExists = true
@@ -152,6 +176,7 @@ export class AppComponent {
            this.nutrientList.push(new Nutrient(nutrient.name,nutrient.value,nutrient.max));
          }
          this.goal = data.goal
+
        }else{
          this.userExists = false
        }
@@ -159,25 +184,9 @@ export class AppComponent {
      })
    }
 
-  // getDailyNutrientProgress(){
-  //   this.db.getDailyNutrientProgress().subscribe((data:any) => {
-  //     if(data.status == "success") {
-  //       console.log("hiii")
-  //       this.result = {calories: data.calories, protein: data.protein}
-  //       console.log(this.result)
-  //     }else{
-  //       console.log("err")
-  //     }
-  //   })
-  //   console.log("2")
-  //  }
-
-  getDailyMealProgress(){
+  getMealProgress(){
     this.db.getDailyMealProgress().subscribe((data:any) => {
       if(data.status == "success") {
-        console.log(data.breakfast)
-        console.log(data.lunch)
-        console.log(data.dinner)
         this.breakfast= data.breakfast
         this.lunch = data.lunch
         this.dinner = data.dinner
@@ -190,6 +199,7 @@ export class AppComponent {
   nextDay(){
     this.db.nextDay().subscribe((data:any) => {
         if(data.status === "success"){
+          this.suggestionList = [{name: "None", calories:0,protein:0,carbs:0,fats:0}]
           this.breakfast = [{name: "None", calories:"None",protein:"None"}]
           this.lunch = [{name: "None", calories:"None",protein:"None"}]
           this.dinner = [{name: "None", calories:"None",protein:"None"}]
@@ -205,7 +215,6 @@ export class AppComponent {
   getMealHistory(){
     this.db.getMealHistory().subscribe((data:any) => {
       if(data.status == "success"){
-        console.log('here')
         this.historyList = data.historyList
       }else{
         console.log("error")
@@ -218,42 +227,6 @@ export class AppComponent {
         this.suggestionList = data.suggestionList
     })
   }
-
-  // displayDailyGoalAndProgress(){
-  //   this.db.getDailyNutrientGoal().subscribe((data:any) => {
-  //
-  //          if(data.status == "success") {
-  //            this.userExists = true
-  //            for(let nutrient of data.nutrients){
-  //              this.nutrientList.push(new Nutrient(nutrient.name,nutrient.value));
-  //            }
-  //            this.goal = data.goal
-  //          }else{
-  //            this.userExists = false
-  //          }
-  //
-  //        })
-  //   this.db.getDailyNutrientProgress().subscribe((data:any) => {
-  //         if(data.status == "success") {
-  //           this.result = {calories: data.calories, protein: data.protein}
-  //         }else{
-  //           console.log("err")
-  //         }
-  //       })
-  //
-  //   // for(const [key,value] of Object.entries(this.result)){
-  //   //   for(let nutrient of this.nutrientList){
-  //   //     if(nutrient.name == key){
-  //   //       nutrient.value += value
-  //   //       break
-  //   //     }
-  //   //   }
-  //   // }
-  //   console.log(this.result)
-  //   console.log(this.nutrientList)
-  //
-  // }
-
 
 }
 

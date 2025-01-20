@@ -1,12 +1,28 @@
+/**
+ * The database controller to hold the logic. All functions has been edited to accomodate for CRUD requests
+ * @author Jason Susanto
+ */
 
+/**
+ * Model import
+ * @const
+ */
 const Meal = require('../model/Meal')
 const User = require('../model/User')
 const Day = require('../model/Day')
 
-let dayCount = 0
 let currentDate = new Date(2025,0,20)
-let dateUpdated = false
 
+/**
+ * create calorie requirement
+ * @param gender Male or female
+ * @param weight number representing weight
+ * @param height number representing height
+ * @param age age
+ * @param activityLevel enum of activity levels
+ * @param goal lose or gain weight
+ * @returns {number} calorie req
+ */
 function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goal){
 
   let result = 0
@@ -36,7 +52,7 @@ function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goa
       break
   }
 
-  if(goal =="Gain Weight"){
+  if(goal === "Gain Weight"){
     result += 500
   }else{
     result -= 500
@@ -46,6 +62,12 @@ function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goa
 
 }
 
+/**
+ * calculate macronutrirent req
+ * @param calories daily calorie
+ * @param goal lose or gain weight
+ * @returns {number[]} array of nutrients
+ */
 function calculateMacronutrients(calories, goal){
   let result
 
@@ -74,30 +96,31 @@ function calculateMacronutrients(calories, goal){
 module.exports = {
 
 
+  /**
+   * add meal to database
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
   addMeal: async function (req, res) {
     try{
       let body = req.body
-      //{name: body.name, servingQty:body.servingQty,servingUnit:body.servingUnit,
-      //         servingWeightGram:body.servingWeightGram,protein:body.protein,calories:body.calories,time:body.time}
-      let mealDoc = new
-      Meal(body)
-      await mealDoc.save()
-
       let userDoc = await User.findOne({})
-      console.log(userDoc)
-      console.log(userDoc.currentDateId)
       let currentDay = await Day.findOne({dateId:userDoc.currentDateId})
-      console.log(currentDay)
-      console.log(currentDay.mealList)
-      currentDay.mealList.push(mealDoc._id)
-      currentDay.macronutrientProgress.forEach(
-        (item) => item.name === "calories" ? item.value += body.calories :
-        item.name === "protein" ? item.value += body.protein : item )
-      //currentDay.macronutrientProgress.push({name:"protein", value:body.protein})
-      //not good for extensibility
-      // forEach(
-      //   (item) => item.name === "calories" ? item.value += body.calories :
-      // item.name === "protein" ? item.value += body.protein : item )
+      for(let meal of body) {
+        let mealDoc = new
+        Meal(meal)
+        await mealDoc.save()
+
+        currentDay.mealList.push(mealDoc._id)
+        currentDay.macronutrientProgress.forEach(
+          (item) =>
+            item.name === "calories" ? Math.round(item.value += meal.calories) :
+            item.name === "protein" ? Math.round(item.value += meal.protein) :
+              item.name === "carbs" ? Math.round(item.value += meal.carbs) :
+                item.name === "fats" ? Math.round(item.value += meal.fats) : item)
+      }
+
       await currentDay.save()
 
 
@@ -110,6 +133,12 @@ module.exports = {
 
   },
 
+  /**
+   * add user and day to database
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
   addUserInfo: async function (req, res) {
     try{
       let user = req.body
@@ -120,9 +149,9 @@ module.exports = {
       let data =
         {
           name: user.name, gender: user.gender, weight: user.weight, height: user.height,
-          age: user.age, activityLevel: user.activityLevel, goal: user.goal, dailyCalorie: dailyCalorie,
-          macronutrients: [{name: "protein", value: protein},{name: "carbs", value: carbs},
-          {name: "fats", value: fats}], currentDateId: currentDate.getDate()
+          age: user.age, activityLevel: user.activityLevel, goal: user.goal, dailyCalorie: Math.round(dailyCalorie),
+          macronutrients: [{name: "protein", value: Math.round(protein)},{name: "carbs", value: Math.round(carbs)},
+          {name: "fats", value: Math.round(fats)}], currentDateId: currentDate.getDate()
         }
 
       let userDoc = new User(data)
@@ -136,7 +165,6 @@ module.exports = {
           {name: "fats", value: 0},
         ], mealList: []})
       await dayDoc.save()
-      dayCount += 1
 
       res.send({status:"success"})
 
@@ -147,7 +175,13 @@ module.exports = {
 
   },
 
-  getNutrientGoal: async function (req, res) {
+  /**
+   * fetch nutrient goal and progress
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
+  getNutrientGoalAndProgress: async function (req, res) {
     try {
       let userData = await User.findOne({})
       let calorie
@@ -157,7 +191,8 @@ module.exports = {
         calorie = {name: "calories", value: userData.dailyCalorie}
         nutrients = [calorie, ...userData.macronutrients]
 
-        let dayData = await Day.findOne({dateId:currentDate.getDate()})
+        let dayData = await Day.findOne({dateId:userData.currentDateId})
+
         let finalResult = []
         for(let progress of dayData.macronutrientProgress){
           for(let nutrient of nutrients){
@@ -168,7 +203,6 @@ module.exports = {
           }
         }
 
-        //console.log(finalResult)
         res.send({status:"success",nutrients: finalResult, goal:userData.goal})
 
       }else{
@@ -180,18 +214,12 @@ module.exports = {
     }
   },
 
-  getDailyNutrientProgress: async function(req,res){
-    try{
-      let data = await Day.findOne({dateId:currentDate.getDate()})
-
-      res.send({status:"success", calories:data.calorieProgress, protein:data.proteinProgress})
-
-    }catch(err){
-      res.send({status:"failed"})
-    }
-
-  },
-
+  /**
+   * fetch meals eaten in the day
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
   getDailyMealProgress: async function(req,res){
     try{
 
@@ -200,7 +228,6 @@ module.exports = {
       let lunch = []
       let dinner = []
 
-      //console.log("started")
       //[{meal},{meal},...]
       for(let meal of data.mealList){
         let hour = parseInt(meal.time.slice(0,2))
@@ -225,14 +252,22 @@ module.exports = {
     }
   },
 
+  /**
+   * create new day and reset parameters
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
   nextDay: async function(req,res){
     try {
-      console.log('here')
-      dayCount += 1
-      currentDate.setDate(currentDate.getDate() + 1)
+      let userDoc = await User.findOne({})
+
+      userDoc.currentDateId += 1;
+      currentDate.setDate(userDoc.currentDateId);
+
       let dayDoc = new
       Day({
-        date: currentDate, dateId:currentDate.getDate(), macronutrientProgress: [
+        date: currentDate, dateId:userDoc.currentDateId, macronutrientProgress: [
           {name: "calories", value: 0},
           {name: "protein", value: 0},
           {name: "carbs", value: 0},
@@ -241,25 +276,35 @@ module.exports = {
       })
       await dayDoc.save()
 
-      let userDoc = await User.findOne({})
-      userDoc.currentDate = currentDate;
       await userDoc.save()
 
-      console.log("here1")
       res.send({status:"success"})
 
     }catch(err){
+      console.log(err)
       console.log("err")
     }
 
   },
 
+  /**
+   * fetch all days
+   * @function
+   * @param req - the request recieved
+   * @param res - the response given back
+   */
   getMealHistory: async function(req,res){
-    console.log("here2")
     try {
+      let userDoc = await User.findOne({})
       let dayList = await Day.find({})
+      let result = []
 
-      res.send({status: "success", historyList: dayList})
+      for(let day of dayList){
+        if(!(day.dateId === userDoc.currentDateId)){
+          result.push(day)
+        }
+      }
+      res.send({status: "success", historyList: result})
 
     }catch(err){
       console.log("err")
