@@ -122,7 +122,7 @@ module.exports = {
           name: user.name, gender: user.gender, weight: user.weight, height: user.height,
           age: user.age, activityLevel: user.activityLevel, goal: user.goal, dailyCalorie: dailyCalorie,
           macronutrients: [{name: "protein", value: protein},{name: "carbs", value: carbs},
-          {name: "fats", value: fats}]
+          {name: "fats", value: fats}], currentDate: currentDate
         }
 
       let userDoc = new User(data)
@@ -240,6 +240,11 @@ module.exports = {
         ], mealList: []
       })
       await dayDoc.save()
+
+      let userDoc = await User.findOne({})
+      userDoc.currentDate = currentDate;
+      await userDoc.save()
+
       console.log("here1")
       res.send({status:"success"})
 

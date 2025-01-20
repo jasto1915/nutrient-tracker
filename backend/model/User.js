@@ -42,7 +42,12 @@ const userSchema = mongoose.Schema({
     required: true,
   },
 
-  macronutrients: [{name: String, value: Number}]
+  macronutrients: [{name: String, value: Number}],
+
+  currentDate:{
+    type: Date,
+    required: true,
+  }
 
 })
 

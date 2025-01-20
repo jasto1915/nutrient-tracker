@@ -4,5 +4,6 @@ const nutritionixController = require("../controllers/Nutritionix-controller")
 
 
 router.post("/freeform-input/parse", nutritionixController.parseFreeformToMeal)
+router.get("/suggestion/suggestMeal", nutritionixController.suggestMeal)
 
 module.exports = router
