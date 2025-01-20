@@ -175,4 +175,10 @@ utilize typescripts ability to create type, to enforce certain objects to be a c
 **Decision**: In this phase, I check for bugs and feature errors. 
 
 
+### Usage Guideline
+
+To execute the project, clone the project to your favorite IDE. Then, open up your local mongodb. Ensure that your mongodb url
+is 27017 or 127.0.0.1:27017 (the long version). Then, you can just execute the App.js file, and open localhost:8080 on your browser. 
+Thanks!
+
 
