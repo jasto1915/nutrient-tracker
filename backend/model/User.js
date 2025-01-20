@@ -44,8 +44,8 @@ const userSchema = mongoose.Schema({
 
   macronutrients: [{name: String, value: Number}],
 
-  currentDate:{
-    type: Date,
+  currentDateId:{
+    type: Number,
     required: true,
   }
 

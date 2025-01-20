@@ -137,12 +137,17 @@
 </div>
 <div>
   <h4>Meal Suggestion</h4>
-  @for(meal of suggestionList; track meal){
+  <div>
+    <label for="time-input2" class="form-label">Select a time:</label>
+    <input type="time" for="time-input2" id="time-input2" [(ngModel)]="timeInput" class="form-control form-control-sm" required>
+  </div>
+  @for(meal of suggestionList; track meal; let i = $index){
     <h5>name: {{meal.title}}</h5>
     <h6>calories: {{meal.calories}}</h6>
     <h6>protein: {{meal.protein}}</h6>
     <h6>carbs: {{meal.carbs}}</h6>
     <h6>fat: {{meal.fat}}</h6>
+    <button (click)="addMeal(i)" class="btn btn-primary">add Meal</button>
   }
 </div>
 <button (click)="suggestMeal()" class="btn btn-primary">Suggest Meal</button>

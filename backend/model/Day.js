@@ -7,6 +7,11 @@ const daySchema = mongoose.Schema({
     required: true,
   },
 
+  dateId:{
+    type: Number,
+    required: true,
+  },
+
   macronutrientProgress: [{
     name: String,
     value: Number,

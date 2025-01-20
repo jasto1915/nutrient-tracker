@@ -116,6 +116,13 @@ export class AppComponent {
 
    }
 
+   addMeal(index:number){
+    let data = this.suggestionList[index]
+     this.meal = new Meal(data.title, 1,"plate",0,
+       parseInt(data.protein),parseInt(data.calories),this.timeInput);
+    this.confirmMeal()
+   }
+
   confirmMeal(){
     this.db.addMeal(this.meal).subscribe((data:any) => {
       this.mealStatus = data.status

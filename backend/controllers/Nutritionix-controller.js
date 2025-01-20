@@ -35,8 +35,8 @@ module.exports = {
 
   suggestMeal: async function(req,res){
     let userDoc = await User.findOne({})
-    console.log(userDoc.currentDate)
-    let dayDoc = await Day.findOne({date: userDoc.currentDate})
+    console.log(userDoc.currentDateId)
+    let dayDoc = await Day.findOne({dateId: userDoc.currentDateId})
     let carbs = [0,0]
     let fats = [0,0]
     let protein= [0,0]
@@ -64,8 +64,9 @@ module.exports = {
       number: 3,
       random: true
     }
+    let response
     try {
-      let response = await axios.get(url, {params: params})
+      response = await axios.get(url, {params: params})
       //console.log(response.data)
       //console.log(response.data.foods[0].food_name)
     }catch(err){
