@@ -1,0 +1,182 @@
+.app-shell {
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+.app-header h1 {
+  font-weight: 600;
+  color: #1f2d3d;
+}
+
+.card {
+  border: 1px solid #e3e8ee;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.card-header {
+  background: #fff;
+  border-bottom: 1px solid #eef1f5;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1f2d3d;
+  border-radius: 10px 10px 0 0;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #55606e;
+  margin-bottom: 0.25rem;
+}
+
+.table {
+  font-size: 0.875rem;
+}
+
+.table thead th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #8a94a6;
+  border-bottom: 1px solid #eef1f5;
+}
+
+.status-note {
+  font-size: 0.875rem;
+  color: #55606e;
+  padding: 0.5rem 0.75rem;
+  background: #f4f6f8;
+  border-radius: 6px;
+}
+
+/* Nutrient progress */
+.nutrient + .nutrient {
+  margin-top: 1rem;
+}
+
+.nutrient-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.3rem;
+}
+
+.nutrient-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2d3d;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.nutrient-value {
+  font-size: 0.8rem;
+  color: #8a94a6;
+  font-variant-numeric: tabular-nums;
+}
+
+progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: none;
+  border-radius: 999px;
+  background: #eef1f5;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+progress::-webkit-progress-bar {
+  background: #eef1f5;
+  border-radius: 999px;
+}
+
+progress::-webkit-progress-value {
+  background: #0d6efd;
+  border-radius: 999px;
+}
+
+progress::-moz-progress-bar {
+  background: #0d6efd;
+  border-radius: 999px;
+}
+
+/* Meal slots */
+.meal-slot {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a94a6;
+  margin-bottom: 0.6rem;
+}
+
+.meal-entry {
+  padding: 0.5rem 0.65rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+}
+
+.meal-name {
+  display: block;
+  font-size: 0.875rem;
+  color: #1f2d3d;
+}
+
+.meal-macros {
+  display: block;
+  font-size: 0.75rem;
+  color: #8a94a6;
+}
+
+/* Suggestions */
+.suggestion {
+  padding: 0.75rem;
+  border: 1px solid #eef1f5;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.suggestion-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1f2d3d;
+}
+
+.suggestion-macros {
+  font-size: 0.75rem;
+  color: #8a94a6;
+  margin-bottom: 0.5rem;
+}
+
+/* History */
+.history-day {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f3f7;
+}
+
+.history-day:last-child {
+  border-bottom: none;
+}
+
+.history-date {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2d3d;
+}
+
+.history-macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.history-macro {
+  font-size: 0.75rem;
+  color: #8a94a6;
+  text-transform: capitalize;
+}

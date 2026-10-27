@@ -39,7 +39,7 @@ export class DatabaseService {
 
   nextDay(){
     let url = API_URL + "/user/nextDay";
-    return this.http.get(url)
+    return this.http.post(url,{},httpOptions)
   }
 
   getMealHistory(){

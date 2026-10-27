@@ -1,6 +1,7 @@
 {
-  "name": "deep-neuron-on-hit-stage2",
-  "version": "0.0.0",
+  "name": "nutrient-tracker-frontend",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +9,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^19.1.0",
     "@angular/common": "^19.1.0",
@@ -18,10 +18,7 @@
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
-    "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "express": "^4.21.2",
-    "mongoose": "^8.9.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

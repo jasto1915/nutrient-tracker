@@ -1,15 +1,19 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
-/dist
+dist
 /tmp
 /out-tsc
 /bazel-out
 
 # Node
-/node_modules
+node_modules
 npm-debug.log
 yarn-error.log
+
+# Environment / secrets
+.env
+.env.local
 
 # IDEs and editors
 .idea/
@@ -29,7 +33,7 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
+.angular
 .sass-cache/
 /connect.lock
 /coverage
@@ -40,3 +44,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local sandbox build overrides (not part of the project)
+Dockerfile.sandbox
+docker-compose.override.yml
+sandbox-ca.crt

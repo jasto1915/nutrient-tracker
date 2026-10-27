@@ -1,5 +1,4 @@
-import {Component, input} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DatabaseService} from './database.service';
 import {ExternalAPIService} from './external-api.service';
@@ -77,28 +76,31 @@ class Nutrient{
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule],
+  imports: [FormsModule],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   textInput = "";
   timeInput = "";
   user: User = new User();
   mealStatus = ""
+  errorMessage = ""
   userExists = false
   goal = ""
 
-  inputMealList: Meal[] = [new Meal()];
+  // Empty rather than seeded with placeholder rows, so the template can show a
+  // proper empty state instead of a row of zeroes.
+  inputMealList: Meal[] = [];
   historyList:any[] = []
   nutrientList:any[] = []
-  suggestionList:any[]=[{name: "None", calories:0,protein:0,carbs:0,fats:0}]
-  mealList: any[] = [{name: "None", calories:"None",protein:"None"}]
-  breakfast:any[] = [{name: "None", calories:"None",protein:"None"}]
-  lunch:any[] = [{name: "None", calories:"None",protein:"None"}]
-  dinner:any[] = [{name: "None", calories:"None",protein:"None"}]
+  suggestionList:any[] = []
+  mealList: any[] = []
+  breakfast:any[] = []
+  lunch:any[] = []
+  dinner:any[] = []
 
   proteinProgress = 0
   calorieProgress = 0
@@ -114,22 +116,33 @@ export class AppComponent {
 
   sendMealInput(){
     let data = {text:this.textInput, time:this.timeInput};
-    this.extapi.parseLanguage(data).subscribe((dataList:any) => {
-      if(dataList.status == "success") {
-        this.inputMealList = []
-        for (let data of dataList.meals) {
-          this.inputMealList.push(new Meal(data.name, data.servingQty, data.servingUnit, data.servingWeightGram,
-            data.protein, data.calories, data.carbs, data.fats, data.time))
+    this.errorMessage = ""
+    this.extapi.parseLanguage(data).subscribe({
+      next: (dataList:any) => {
+        if(dataList.status == "success") {
+          this.inputMealList = []
+          for (let data of dataList.meals) {
+            this.inputMealList.push(new Meal(data.name, data.servingQty, data.servingUnit, data.servingWeightGram,
+              data.protein, data.calories, data.carbs, data.fats, data.time))
+          }
+        }else{
+          this.errorMessage = dataList.msg
         }
-      }else{
-        console.log(dataList.msg)
-      }
-
+      },
+      error: () => this.errorMessage = "Could not reach the server, please try again"
     })
 
    }
 
   addMeal(index:number){
+    // time is required by the Meal schema; without this the save failed with a
+    // generic error and no indication that a time was missing.
+    if(!this.timeInput){
+      this.errorMessage = "Pick a time before adding a suggested meal"
+      return
+    }
+
+    this.errorMessage = ""
     this.inputMealList = []
     let data = this.suggestionList[index]
      this.inputMealList.push(new Meal(data.title, 1,"plate",0,
@@ -138,30 +151,37 @@ export class AppComponent {
    }
 
   confirmMeal(){
-    this.db.addMeal(this.inputMealList).subscribe((data:any) => {
-      this.mealStatus = data.status
-      if(data.status == "success"){
-        this.inputMealList = [new Meal()]
-        this.timeInput = ""
-        this.mealStatus = ""
-        this.suggestionList = [{name: "None", calories:0,protein:0,carbs:0,fats:0}]
+    this.errorMessage = ""
+    this.db.addMeal(this.inputMealList).subscribe({
+      next: (data:any) => {
+        if(data.status == "success"){
+          this.inputMealList = []
+          this.timeInput = ""
+          this.mealStatus = ""
+          this.suggestionList = []
+        }else{
+          this.errorMessage = data.msg
+        }
 
-      }
-
-      this.getMealProgress()
-      this.getNutrientGoalAndProgress()
-
+        this.getMealProgress()
+        this.getNutrientGoalAndProgress()
+      },
+      error: () => this.errorMessage = "Could not reach the server, please try again"
     })
    }
 
   sendUserInfo(){
-    this.db.addUserInfo(this.user).subscribe((data:any) =>
-    {
-      if(data.status === "success"){
-        this.userExists = true
-        this.getNutrientGoalAndProgress()
-      }
-
+    this.errorMessage = ""
+    this.db.addUserInfo(this.user).subscribe({
+      next: (data:any) => {
+        if(data.status === "success"){
+          this.userExists = true
+          this.getNutrientGoalAndProgress()
+        }else{
+          this.errorMessage = data.msg
+        }
+      },
+      error: () => this.errorMessage = "Could not reach the server, please try again"
     })
 
    }
@@ -199,10 +219,10 @@ export class AppComponent {
   nextDay(){
     this.db.nextDay().subscribe((data:any) => {
         if(data.status === "success"){
-          this.suggestionList = [{name: "None", calories:0,protein:0,carbs:0,fats:0}]
-          this.breakfast = [{name: "None", calories:"None",protein:"None"}]
-          this.lunch = [{name: "None", calories:"None",protein:"None"}]
-          this.dinner = [{name: "None", calories:"None",protein:"None"}]
+          this.suggestionList = []
+          this.breakfast = []
+          this.lunch = []
+          this.dinner = []
           this.nutrientList.forEach(nutrient => {
             nutrient.value = 0
           })
@@ -223,8 +243,16 @@ export class AppComponent {
   }
 
   suggestMeal(){
-    this.extapi.suggestMeal().subscribe((data:any) => {
-        this.suggestionList = data.suggestionList
+    this.errorMessage = ""
+    this.extapi.suggestMeal().subscribe({
+      next: (data:any) => {
+        if(data.status == "success"){
+          this.suggestionList = data.suggestionList
+        }else{
+          this.errorMessage = data.msg
+        }
+      },
+      error: () => this.errorMessage = "Could not reach the server, please try again"
     })
   }
 
