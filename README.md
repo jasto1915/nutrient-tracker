@@ -86,8 +86,6 @@ The app is then at `http://localhost:8080`. For frontend work with hot reload, `
 
 **Day rollover is manual:** a button advances the tracker instead of a scheduled job.
 
-**Gender is a binary input:** Mifflin-St Jeor is defined with a single male/female constant, so the setup form offers only those two. A more inclusive version would let the user enter a basal rate directly, or pick the constant themselves.
-
 **Suggestions consider macros only:** cuisine preference was in the original feature list, marked as optional, and wasn't built. Spoonacular supports filtering on it.
 
 **Nutritionix now requires a paid plan:** the free tier this was built against has since been retired. Goal calculation, tracking, history and Spoonacular suggestions all work without it, and meals can still be logged through `POST /api/database/meal/add` directly.
