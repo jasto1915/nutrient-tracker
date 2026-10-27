@@ -1,5 +1,5 @@
 /**
- * The external api controller to hold the logic. All functions has been edited to accomodate for extenral api requests
+ * The external api router. All routes here forward external API requests to the controller.
  * @author Jason Susanto
  */
 
@@ -9,23 +9,23 @@
  */
 const express = require("express")
 const router = express.Router()
-const nutritionixController = require("../controllers/Nutritionix-controller")
+const externalAPIController = require("../controllers/ExternalAPI-controller")
 
 
 /**
  * fetch nutrient parsing
  * @function
- * @param req - the request recieved
+ * @param req - the request received
  * @param res - the response given back
  */
-router.post("/freeform-input/parse", nutritionixController.parseFreeformToMeal)
+router.post("/freeform-input/parse", externalAPIController.parseFreeformToMeal)
 
 /**
  * fetch meal suggestions
  * @function
- * @param req - the request recieved
+ * @param req - the request received
  * @param res - the response given back
  */
-router.get("/suggestion/suggestMeal", nutritionixController.suggestMeal)
+router.get("/suggestion/suggestMeal", externalAPIController.suggestMeal)
 
 module.exports = router

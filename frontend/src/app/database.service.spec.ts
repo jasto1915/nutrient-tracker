@@ -60,6 +60,20 @@ describe('DatabaseService', () => {
     expect(errors).toEqual(["could not advance the day, please try again"]);
   });
 
+  // A rejected request now comes back as a 4xx, but the body is still the
+  // usual envelope, so the message written for the user has to survive it.
+  it('should raise the backend message when the call is rejected with an error status', () => {
+    const errors: string[] = [];
+    service.nextDay().subscribe({error: err => errors.push(err.message)});
+
+    http.expectOne("/api/database/user/nextDay").flush(
+      {status: "failed", msg: "there is no user"},
+      {status: 409, statusText: "Conflict"},
+    );
+
+    expect(errors).toEqual(["there is no user"]);
+  });
+
   it('should raise a readable message when the server cannot be reached', () => {
     const errors: string[] = [];
     service.getMealHistory().subscribe({error: err => errors.push(err.message)});

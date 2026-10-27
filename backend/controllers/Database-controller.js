@@ -1,5 +1,5 @@
 /**
- * The database controller to hold the logic. All functions has been edited to accomodate for CRUD requests
+ * The database controller to hold the logic. All functions have been edited to accommodate CRUD requests
  * @author Jason Susanto
  */
 
@@ -147,7 +147,7 @@ function calculateTotalDailyCalories(gender, weight,height,age,activityLevel,goa
 }
 
 /**
- * calculate macronutrirent req
+ * calculate macronutrient req
  * @param calories daily calorie
  * @param goal lose or gain weight
  * @returns {number[]} array of nutrients
@@ -183,7 +183,7 @@ module.exports = {
   /**
    * add meal to database
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   addMeal: async function (req, res) {
@@ -192,22 +192,21 @@ module.exports = {
 
       let invalid = validateMeals(body)
       if(invalid){
-        return res.send({status:"failed", msg: invalid})
+        return res.status(400).send({status:"failed", msg: invalid})
       }
 
       let userDoc = await User.findOne({})
       if(userDoc == null){
-        return res.send({status:"failed", msg:"there is no user"})
+        return res.status(409).send({status:"failed", msg:"there is no user"})
       }
 
       let currentDay = await Day.findOne({dateId:userDoc.currentDateId})
       if(currentDay == null){
-        return res.send({status:"failed", msg:"there is no day to add this meal to"})
+        return res.status(409).send({status:"failed", msg:"there is no day to add this meal to"})
       }
 
       for(let meal of body) {
-        let mealDoc = new
-        Meal(meal)
+        let mealDoc = new Meal(meal)
         await mealDoc.save()
 
         currentDay.mealList.push(mealDoc._id)
@@ -233,7 +232,7 @@ module.exports = {
 
     }catch(err){
       console.error(err.message)
-      res.send({status:"failed", msg:"could not save that meal, please try again"})
+      res.status(500).send({status:"failed", msg:"could not save that meal, please try again"})
     }
 
   },
@@ -241,7 +240,7 @@ module.exports = {
   /**
    * add user and day to database
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   addUserInfo: async function (req, res) {
@@ -250,14 +249,14 @@ module.exports = {
 
       let invalid = validateUser(user)
       if(invalid){
-        return res.send({status:"failed", msg: invalid})
+        return res.status(400).send({status:"failed", msg: invalid})
       }
 
       // Every read resolves the user with an unfiltered findOne(), so a second
       // user would be silently orphaned along with a duplicate Day.
       let existingUser = await User.findOne({})
       if(existingUser != null){
-        return res.send({status:"failed", msg:"a user already exists"})
+        return res.status(409).send({status:"failed", msg:"a user already exists"})
       }
 
       let dailyCalorie =
@@ -275,8 +274,7 @@ module.exports = {
       let userDoc = new User(data)
       await userDoc.save()
 
-      let dayDoc = new
-      Day({date:todayId(), dateId:todayId(),macronutrientProgress:[
+      let dayDoc = new Day({dateId: todayId(), macronutrientProgress:[
           {name: "calories", value: 0},
           {name: "protein", value: 0},
           {name: "carbs", value: 0},
@@ -287,7 +285,8 @@ module.exports = {
       res.send({status:"success"})
 
     }catch(err){
-      res.send({status:"failed", msg:"please try again"})
+      console.error(err.message)
+      res.status(500).send({status:"failed", msg:"please try again"})
     }
 
 
@@ -296,7 +295,7 @@ module.exports = {
   /**
    * fetch nutrient goal and progress
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   getNutrientGoalAndProgress: async function (req, res) {
@@ -324,18 +323,21 @@ module.exports = {
         res.send({status:"success",nutrients: finalResult, goal:userData.goal})
 
       }else{
+        // Not an error: this is how the frontend decides to show the setup
+        // form, so it stays a 200 rather than becoming a 4xx.
         res.send({status:"failed", msg:"there is no user"})
       }
 
     }catch(err){
-      res.send({status:"failed", msg:"please try again"})
+      console.error(err.message)
+      res.status(500).send({status:"failed", msg:"please try again"})
     }
   },
 
   /**
    * fetch meals eaten in the day
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   getDailyMealProgress: async function(req,res){
@@ -344,6 +346,10 @@ module.exports = {
       // The user document is the single source of truth for which day is
       // current; deriving it separately here let the two drift apart.
       let userDoc = await User.findOne({})
+      if(userDoc == null){
+        return res.status(409).send({status:"failed", msg:"there is no user"})
+      }
+
       let data = await Day.findOne({dateId:userDoc.currentDateId}).populate("mealList")
       let breakfast = []
       let lunch = []
@@ -376,28 +382,31 @@ module.exports = {
 
 
     }catch(err){
-      res.send({status:"failed"})
+      console.error(err.message)
+      res.status(500).send({status:"failed", msg:"could not load today's meals, please try again"})
     }
   },
 
   /**
    * create new day and reset parameters
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   nextDay: async function(req,res){
     try {
       let userDoc = await User.findOne({})
+      if(userDoc == null){
+        return res.status(409).send({status:"failed", msg:"there is no user"})
+      }
 
       userDoc.currentDateId = addDays(userDoc.currentDateId, 1);
 
       // Advancing twice onto the same day must not create a second Day document.
       let existingDay = await Day.findOne({dateId: userDoc.currentDateId})
       if(!existingDay){
-        let dayDoc = new
-        Day({
-          date: userDoc.currentDateId, dateId:userDoc.currentDateId, macronutrientProgress: [
+        let dayDoc = new Day({
+          dateId: userDoc.currentDateId, macronutrientProgress: [
             {name: "calories", value: 0},
             {name: "protein", value: 0},
             {name: "carbs", value: 0},
@@ -413,7 +422,7 @@ module.exports = {
 
     }catch(err){
       console.error(err.message)
-      res.send({status:"failed", msg:"could not advance the day, please try again"})
+      res.status(500).send({status:"failed", msg:"could not advance the day, please try again"})
     }
 
   },
@@ -421,7 +430,7 @@ module.exports = {
   /**
    * fetch all days
    * @function
-   * @param req - the request recieved
+   * @param req - the request received
    * @param res - the response given back
    */
   getMealHistory: async function(req,res){
@@ -439,7 +448,7 @@ module.exports = {
 
     }catch(err){
       console.error(err.message)
-      res.send({status:"failed", msg:"could not load history, please try again"})
+      res.status(500).send({status:"failed", msg:"could not load history, please try again"})
     }
 
   }

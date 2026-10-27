@@ -12,7 +12,7 @@ const express = require("express");
 const router = express.Router();
 
 /**
- * import functions frmo controller
+ * import functions from controller
  */
 const databaseController = require("../controllers/Database-controller");
 

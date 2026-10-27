@@ -2,12 +2,8 @@
 const mongoose = require('mongoose');
 
 const daySchema = mongoose.Schema({
-  date: {
-    type: String,
-    required: true,
-  },
-
-  // Calendar date as YYYY-MM-DD, unique per day.
+  // Calendar date as YYYY-MM-DD, unique per day. This is both the identifier
+  // and the date shown in the history, so it is stored once rather than twice.
   dateId:{
     type: String,
     required: true,

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, catchError, map, throwError} from 'rxjs';
-import {ApiResponse, NETWORK_ERROR, unwrap} from './api-response';
+import {ApiResponse, toError, unwrap} from './api-response';
 import {Meal} from './models/meal';
 import {User} from './models/user';
 import {Nutrient} from './models/nutrient';
@@ -64,7 +64,7 @@ export class DatabaseService {
       map(response => response.status === "success"
         ? {nutrients: response.nutrients, goal: response.goal}
         : null),
-      catchError(() => throwError(() => new Error(NETWORK_ERROR))),
+      catchError(error => throwError(() => toError(error))),
     );
   }
 

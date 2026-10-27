@@ -31,7 +31,7 @@ Photo recognition was considered and scoped out during planning, on time constra
 | File | Contents |
 |---|---|
 | [`backend/controllers/Database-controller.js`](backend/controllers/Database-controller.js) | Nutrition maths: TDEE, macro split, time-of-day bucketing, day rollover |
-| [`backend/controllers/Nutritionix-controller.js`](backend/controllers/Nutritionix-controller.js) | Both external integrations, including the translation from remaining macros into a bounded recipe query |
+| [`backend/controllers/ExternalAPI-controller.js`](backend/controllers/ExternalAPI-controller.js) | Both external integrations, including the translation from remaining macros into a bounded recipe query |
 | [`backend/model/Day.js`](backend/model/Day.js) | Per-day progress, added partway through the build |
 | [`Design Rationale.md`](Design%20Rationale.md) | Day-by-day reasoning written during the original build |
 
@@ -85,6 +85,8 @@ The app is then at `http://localhost:8080`. For frontend work with hot reload, `
 **One user, no auth:** every query resolves the user with an unfiltered `findOne()`. Supporting multiple users means adding authentication and scoping every query by user ID.
 
 **Day rollover is manual:** a button advances the tracker instead of a scheduled job.
+
+**Gender is a binary input:** Mifflin-St Jeor is defined with a single male/female constant, so the setup form offers only those two. A more inclusive version would let the user enter a basal rate directly, or pick the constant themselves.
 
 **Suggestions consider macros only:** cuisine preference was in the original feature list, marked as optional, and wasn't built. Spoonacular supports filtering on it.
 

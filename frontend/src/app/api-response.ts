@@ -13,6 +13,22 @@ export interface ApiResponse {
 export const NETWORK_ERROR = "Could not reach the server, please try again";
 
 /**
+ * Turns whatever failed into the Error the caller should show.
+ *
+ * The backend answers a rejected request with a 4xx or 5xx whose body is still
+ * the usual envelope, so the message it wrote for the user is read back out of
+ * there. Only a genuinely unreachable server, which has no body to read, falls
+ * back to the generic message.
+ */
+export function toError(error: unknown): Error {
+  if(error instanceof HttpErrorResponse){
+    const msg = (error.error as ApiResponse | null)?.msg;
+    return new Error(msg || NETWORK_ERROR);
+  }
+  return error instanceof Error ? error : new Error(NETWORK_ERROR);
+}
+
+/**
  * Unwraps the response envelope so callers receive the payload on its own.
  *
  * A failed status is raised as an Error carrying the backend's own message, and
@@ -28,8 +44,6 @@ export function unwrap<T extends ApiResponse, V>(select: (response: T) => V) {
       }
       return select(response);
     }),
-    catchError(error => throwError(() =>
-      error instanceof HttpErrorResponse ? new Error(NETWORK_ERROR) : error
-    )),
+    catchError(error => throwError(() => toError(error))),
   );
 }

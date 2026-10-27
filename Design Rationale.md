@@ -1,7 +1,7 @@
 # Design Rationale
 
 ---
-###### PS/Note
+
 ### Objective
 This project is done in part of Monash's DeepNeuron
 On-Hit application stage 2. The objective is to code a small
@@ -18,7 +18,7 @@ highlighting what, how and why it is done.
 **Problem-Background**: I remember when I had a meal from my own cooking and from restaurants, I wonder how much calories
 and other nutritional values I was consuming. This is done because I wanted to ensure having enough calories to gain weight.
 However, finding this information on the nutritional value of the food I had was hard. The food can vary in terms of portion and
-ingredients. Standard apps that provide simillar functionality can only provide standard typical meals, and it leaves doubt
+ingredients. Standard apps that provide similar functionality can only provide standard typical meals, and it leaves doubt
 on whether the nutritional intake is accurate as to what I am eating. In addition, finding out what type of dish to 
 cook that is suitable for my nutritional need for the rest of the day can be tricky as well. 
 
@@ -163,7 +163,7 @@ controllers are too. The controllers ensure a unified place to make functions th
 meal class. However, as I said before, as we go, we understand more about the requirements and needs. It is difficult and not good use of time
 to think all about it in the beginning, because we don't know thoroughly all cases. That is why then, I added a new class which is day. This
 is useful to centralize information about each day which is essential for history section in particular. The model which is mongoose, helps to enforce
-that the data we have in the database are unified. This minimalized errors when using database operations and sending it to the front end. We also
+that the data we have in the database are unified. This minimised errors when using database operations and sending it to the front end. We also
 utilize typescripts ability to create type, to enforce certain objects to be a certain type, so that we can minimize errors.   
 
 
@@ -177,11 +177,12 @@ utilize typescripts ability to create type, to enforce certain objects to be a c
 
 ### Usage Guideline
 
-To execute the project, clone the project to your favorite IDE. Then, open up your local mongodb. Ensure that your mongodb url
-is 27017 or 127.0.0.1:27017 (the long version). Then, you can just execute the App.js file, and open localhost:8080 on your browser. 
-Thanks!
+Setup instructions live in the [README](README.md) and are the ones to follow. At the time of
+this document they were: clone the repository, start a local MongoDB on 127.0.0.1:27017, run
+App.js, and open localhost:8080. The project has since been containerised and now reads its
+API credentials from the environment, so the README supersedes what is written here.
 
-_note_: I decided not to use firebase, because after deeper research, firebase doesn't have native support for mongodb. It's
+_note_: I decided not to use firebase, because after deeper research, firebase doesn't have native support for mongodb. Its
 documentation also seems to separate front and back end, and researching further is limited by the time constraint I have. Hence,
 I decide to stick to the deployment method of the code from github.
 
