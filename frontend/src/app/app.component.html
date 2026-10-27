@@ -37,7 +37,7 @@
       <div class="card-header">Meal Input</div>
       <div class="card-body">
         @if(inputMealList.length === 0){
-          <p class="text-muted small mb-3">Nothing parsed yet — submit a meal above to see it broken down here.</p>
+          <p class="text-muted small mb-3">Nothing parsed yet. Submit a meal above to see it broken down here.</p>
         }@else{
           <div class="table-responsive">
             <table class="table table-sm align-middle mb-3">
@@ -147,7 +147,7 @@
             <button (click)="addMeal(i)" class="btn btn-outline-secondary btn-sm">add Meal</button>
           </div>
         } @empty {
-          <p class="text-muted small mb-0">No suggestions yet — use the button below to find recipes that fit your remaining macros.</p>
+          <p class="text-muted small mb-0">No suggestions yet. Use the button below to find recipes that fit your remaining macros.</p>
         }
         <button (click)="suggestMeal()" class="btn btn-primary btn-sm mt-2">Suggest Meal</button>
       </div>
