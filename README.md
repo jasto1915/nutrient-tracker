@@ -75,12 +75,13 @@ Open `http://localhost:8080`.
 
 For frontend development with hot reload, run `npm start` in `frontend/` instead and it will serve on `http://localhost:4200`.
 
-API keys are free-tier from [Nutritionix](https://www.nutritionix.com/business/api) and [Spoonacular](https://spoonacular.com/food-api).
+[Spoonacular](https://spoonacular.com/food-api) still offers a free tier. [Nutritionix](https://www.nutritionix.com/business/api) has since retired theirs, so meal parsing now needs a paid plan — see Known limitations.
 
 ## Known limitations
 
 Being honest about what this does and doesn't do:
 
+- **Meal parsing needs a paid Nutritionix plan.** The free tier this was built against has since been retired. Everything else — goal calculation, tracking, history, and Spoonacular suggestions — works without it, and meals can still be logged through `POST /api/database/meal/add` directly.
 - **Single user.** There is no authentication, and queries resolve the user with an unfiltered `findOne()`. Supporting multiple users would mean adding auth and scoping every query by user ID.
 - **Day advancement is manual.** A "next day" button rolls the tracker over rather than a scheduled job.
 - **Suggestions are macro-driven only.** Spoonacular is queried on protein/carb/fat targets with no cuisine or dietary filtering.
