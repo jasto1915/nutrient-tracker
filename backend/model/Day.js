@@ -7,9 +7,11 @@ const daySchema = mongoose.Schema({
     required: true,
   },
 
+  // Calendar date as YYYY-MM-DD, unique per day.
   dateId:{
-    type: Number,
+    type: String,
     required: true,
+    unique: true,
   },
 
   macronutrientProgress: [{

@@ -48,12 +48,13 @@ router.get("/user/getNutrientGoalAndProgress", databaseController.getNutrientGoa
 router.get("/user/getMealProgress", databaseController.getDailyMealProgress)
 
 /**
- * get method for what happens when next day occurs
+ * post method for what happens when next day occurs. POST rather than GET
+ * because it creates a new Day document.
  * @function
  * @param {string} urlPath - url
  * @param {function} handlers - function to be executed
  */
-router.get("/user/nextDay", databaseController.nextDay)
+router.post("/user/nextDay", databaseController.nextDay)
 
 /**
  * get method for list of days

@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema({
   },
 
   height: {
-    type: String,
+    type: Number,
     required: true,
   },
 
@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema({
   macronutrients: [{name: String, value: Number}],
 
   currentDateId:{
-    type: Number,
+    type: String,
     required: true,
   }
 
