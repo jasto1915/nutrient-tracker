@@ -1,0 +1,30 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3100}:8080"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/nutrient-tracker
+      PORT: 8080
+      NUTRITIONIX_APP_ID: ${NUTRITIONIX_APP_ID:-}
+      NUTRITIONIX_APP_KEY: ${NUTRITIONIX_APP_KEY:-}
+      SPOONACULAR_API_KEY: ${SPOONACULAR_API_KEY:-}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo-data:
