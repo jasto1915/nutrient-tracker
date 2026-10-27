@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DeepNeuron-OnHit-Stage2": {
+    "nutrient-tracker": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/deep-neuron-on-hit-stage2",
+            "outputPath": "dist/nutrient-tracker",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "DeepNeuron-OnHit-Stage2:build:production"
+              "buildTarget": "nutrient-tracker:build:production"
             },
             "development": {
-              "buildTarget": "DeepNeuron-OnHit-Stage2:build:development"
+              "buildTarget": "nutrient-tracker:build:development"
             }
           },
           "defaultConfiguration": "development"

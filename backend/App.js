@@ -14,7 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/nutrie
 
 // Resolved from this file rather than the working directory, so the server can
 // be started from anywhere.
-const FRONTEND_DIST = path.join(__dirname, '..', 'frontend', 'dist', 'deep-neuron-on-hit-stage2', 'browser');
+const FRONTEND_DIST = path.join(__dirname, '..', 'frontend', 'dist', 'nutrient-tracker', 'browser');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
