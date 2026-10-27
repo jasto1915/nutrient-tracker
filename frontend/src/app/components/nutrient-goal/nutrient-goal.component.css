@@ -1,0 +1,51 @@
+.nutrient + .nutrient {
+  margin-top: 1rem;
+}
+
+.nutrient-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.3rem;
+}
+
+.nutrient-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2d3d;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.nutrient-value {
+  font-size: 0.8rem;
+  color: #8a94a6;
+  font-variant-numeric: tabular-nums;
+}
+
+progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: none;
+  border-radius: 999px;
+  background: #eef1f5;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+progress::-webkit-progress-bar {
+  background: #eef1f5;
+  border-radius: 999px;
+}
+
+progress::-webkit-progress-value {
+  background: #0d6efd;
+  border-radius: 999px;
+}
+
+progress::-moz-progress-bar {
+  background: #0d6efd;
+  border-radius: 999px;
+}

@@ -1,0 +1,20 @@
+<div class="card mb-4">
+  <div class="card-header">Today's meals</div>
+  <div class="card-body">
+    <div class="row g-3">
+      @for(slot of slots; track slot.label){
+        <div class="col-md-4">
+          <h6 class="meal-slot">{{slot.label}}</h6>
+          @for(meal of slot.meals; track meal){
+            <div class="meal-entry">
+              <span class="meal-name">{{meal.name}}</span>
+              <span class="meal-macros">{{meal.calories}} cal &middot; {{meal.protein}}g protein</span>
+            </div>
+          } @empty {
+            <p class="text-muted small mb-0">&mdash;</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

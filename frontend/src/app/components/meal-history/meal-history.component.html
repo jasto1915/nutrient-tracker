@@ -1,0 +1,17 @@
+<div class="card mb-4">
+  <div class="card-header">History</div>
+  <div class="card-body">
+    @for(day of history; track day.dateId){
+      <div class="history-day">
+        <div class="history-date">{{day.date}}</div>
+        <div class="history-macros">
+          @for(nutrient of day.macronutrientProgress; track nutrient.name){
+            <span class="history-macro">{{nutrient.name}}: {{nutrient.value}}</span>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="text-muted mb-0">No previous days yet.</p>
+    }
+  </div>
+</div>

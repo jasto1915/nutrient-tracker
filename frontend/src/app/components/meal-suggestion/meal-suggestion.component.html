@@ -1,0 +1,24 @@
+<div class="card mb-4">
+  <div class="card-header">Meal Suggestion</div>
+  <div class="card-body">
+    <div class="mb-3">
+      <label for="time-input2" class="form-label">Select a time:</label>
+      <input type="time" for="time-input2" id="time-input2"
+             [ngModel]="time" (ngModelChange)="timeChange.emit($event)"
+             class="form-control form-control-sm" required>
+    </div>
+    @for(suggestion of suggestions; track suggestion.id){
+      <div class="suggestion">
+        <div class="suggestion-title">{{suggestion.title}}</div>
+        <div class="suggestion-macros">
+          {{suggestion.calories}} cal &middot; {{suggestion.protein}} protein &middot;
+          {{suggestion.carbs}} carbs &middot; {{suggestion.fat}} fat
+        </div>
+        <button (click)="suggestionAdded.emit(suggestion)" class="btn btn-outline-secondary btn-sm">add Meal</button>
+      </div>
+    } @empty {
+      <p class="text-muted small mb-0">No suggestions yet. Use the button below to find recipes that fit your remaining macros.</p>
+    }
+    <button (click)="suggestionsRequested.emit()" class="btn btn-primary btn-sm mt-2">Suggest Meal</button>
+  </div>
+</div>

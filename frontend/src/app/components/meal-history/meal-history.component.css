@@ -1,0 +1,27 @@
+.history-day {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f3f7;
+}
+
+.history-day:last-child {
+  border-bottom: none;
+}
+
+.history-date {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2d3d;
+}
+
+.history-macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.2rem;
+}
+
+.history-macro {
+  font-size: 0.75rem;
+  color: #8a94a6;
+  text-transform: capitalize;
+}

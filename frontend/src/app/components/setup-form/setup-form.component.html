@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="card-header">User Info</div>
+  <div class="card-body">
+    <p class="text-muted">Tell us about yourself so we can work out your daily targets.</p>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Name: </label>
+      <input type="text" for="name" id="name" [(ngModel)]="user.name" class="form-control form-control-sm" required>
+    </div>
+    <div class="row g-3">
+      <div class="col-sm-6 mb-3">
+        <label for="age" class="form-label">Age: </label>
+        <input type="number" for="age" id="age" [(ngModel)]="user.age" class="form-control form-control-sm" required>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <label for="gender" class="form-label">Gender: </label>
+        <select name="gender" id="gender" [(ngModel)]="user.gender" class="form-select form-select-sm">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <label for="height" class="form-label">Height (cm): </label>
+        <input type="number" for="height" id="height" [(ngModel)]="user.height" class="form-control form-control-sm" required>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <label for="weight" class="form-label">Weight (kg): </label>
+        <input type="number" for="weight" id="weight" [(ngModel)]="user.weight" class="form-control form-control-sm" required>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="activity-level" class="form-label">Activity level: </label>
+      <!-- The value attributes are what the backend matches on. Without them the
+           submitted value is the full label and the multiplier is never applied. -->
+      <select name="activity-level" id="activity-level" [(ngModel)]="user.activityLevel" class="form-select form-select-sm">
+        <option value="Sedentary">Sedentary (limited exercise)</option>
+        <option value="Lightly Active">Lightly Active (light exercise less than 3 days/week)</option>
+        <option value="Moderately Active">Moderately Active (moderate exercise most days of the week)</option>
+        <option value="Very Active">Very Active (hard exercise every day)</option>
+        <option value="Extra Active">Extra Active (strenuous exercise two or more times per day)</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="goal" class="form-label">Goal: </label>
+      <select name="goal" id="goal" [(ngModel)]="user.goal" class="form-select form-select-sm">
+        <option value="Lose Weight">Lose Weight</option>
+        <option value="Gain Weight">Gain Weight</option>
+      </select>
+    </div>
+    <button (click)="submit()" class="btn btn-primary btn-sm">Send User Info</button>
+  </div>
+</div>

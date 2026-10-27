@@ -1,13 +1,12 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
-import { routes } from './app.routes';
-import {DatabaseService} from './database.service';
-import {provideHttpClient} from '@angular/common/http';
-import {ExternalAPIService} from './external-api.service';
-
+// No router: the whole app is one screen, which either shows the setup form or
+// the tracker. Both services declare providedIn: 'root', so neither is listed
+// here either.
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), DatabaseService,provideHttpClient(),
-    ExternalAPIService
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
   ]
 };

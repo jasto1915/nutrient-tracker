@@ -10,229 +10,44 @@
     <div class="alert alert-warning py-2 px-3 small" role="alert">{{errorMessage}}</div>
   }
 
-@if(userExists){
+  @if(userExists){
 
-<div class="row g-4">
+    <div class="row g-4">
 
-  <div class="col-lg-7">
+      <div class="col-lg-7">
+        <app-meal-log
+          [(time)]="time"
+          [parsedMeals]="parsedMeals"
+          (parseRequested)="parseMeal($event)"
+          (confirmed)="confirmMeal()"
+          (nextDayRequested)="nextDay()" />
 
-    <div class="card mb-4">
-      <div class="card-header">Log a meal</div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="time-input" class="form-label">Select a time:</label>
-          <input type="time" for="time-input" id="time-input" [(ngModel)]="timeInput" class="form-control form-control-sm" required>
-        </div>
-        <div class="mb-3">
-          <label for="food-input" class="form-label">Enter what you ate</label>
-          <textarea rows="4" name="food-input" id="food-input" [(ngModel)]="textInput"
-                    class="form-control form-control-sm"
-                    placeholder="e.g. two slices of whole grain bread with peanut butter" required></textarea>
-        </div>
-        <button (click)="sendMealInput()" class="btn btn-primary btn-sm">Submit</button>
+        <app-daily-meals [breakfast]="breakfast" [lunch]="lunch" [dinner]="dinner" />
+      </div>
+
+      <div class="col-lg-5">
+        <app-nutrient-goal [nutrients]="nutrients" [goal]="goal" />
+
+        <app-meal-suggestion
+          [(time)]="time"
+          [suggestions]="suggestions"
+          (suggestionsRequested)="suggestMeals()"
+          (suggestionAdded)="addSuggestion($event)" />
+
+        <app-meal-history [history]="history" />
+      </div>
+
+    </div>
+
+  }@else{
+
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-6">
+        <app-setup-form (submitted)="createUser($event)" />
       </div>
     </div>
 
-    <div class="card mb-4">
-      <div class="card-header">Meal Input</div>
-      <div class="card-body">
-        @if(inputMealList.length === 0){
-          <p class="text-muted small mb-3">Nothing parsed yet. Submit a meal above to see it broken down here.</p>
-        }@else{
-          <div class="table-responsive">
-            <table class="table table-sm align-middle mb-3">
-              <thead>
-                <tr>
-                  <th>Name</th><th>Serving</th><th>Grams</th>
-                  <th>Cal</th><th>Protein</th><th>Carbs</th><th>Fats</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for(meal of inputMealList; track meal){
-                  <tr>
-                    <td>{{meal.name || '—'}}</td>
-                    <td>{{meal.servingQty}} {{meal.servingUnit}}</td>
-                    <td>{{meal.servingWeightGram}}</td>
-                    <td>{{meal.calories}}</td>
-                    <td>{{meal.protein}}</td>
-                    <td>{{meal.carbs}}</td>
-                    <td>{{meal.fats}}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-        }
-        <button (click)="confirmMeal()" class="btn btn-primary btn-sm">Confirm Meal</button>
-        <button (click)="nextDay()" class="btn btn-outline-secondary btn-sm">Next Day</button>
-        @if(mealStatus){
-          <div class="status-note mt-3">Status: {{mealStatus}}</div>
-        }
-      </div>
-    </div>
-
-    <div class="card mb-4">
-      <div class="card-header">Today's meals</div>
-      <div class="card-body">
-        <div class="row g-3">
-          <div class="col-md-4">
-            <h6 class="meal-slot">Breakfast</h6>
-            @for(meal of breakfast; track meal){
-              <div class="meal-entry">
-                <span class="meal-name">{{meal.name}}</span>
-                <span class="meal-macros">{{meal.calories}} cal &middot; {{meal.protein}}g protein</span>
-              </div>
-            } @empty {
-              <p class="text-muted small mb-0">—</p>
-            }
-          </div>
-          <div class="col-md-4">
-            <h6 class="meal-slot">Lunch</h6>
-            @for(meal of lunch; track meal){
-              <div class="meal-entry">
-                <span class="meal-name">{{meal.name}}</span>
-                <span class="meal-macros">{{meal.calories}} cal &middot; {{meal.protein}}g protein</span>
-              </div>
-            } @empty {
-              <p class="text-muted small mb-0">—</p>
-            }
-          </div>
-          <div class="col-md-4">
-            <h6 class="meal-slot">Dinner</h6>
-            @for(meal of dinner; track meal){
-              <div class="meal-entry">
-                <span class="meal-name">{{meal.name}}</span>
-                <span class="meal-macros">{{meal.calories}} cal &middot; {{meal.protein}}g protein</span>
-              </div>
-            } @empty {
-              <p class="text-muted small mb-0">—</p>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="col-lg-5">
-
-    <div class="card mb-4">
-      <div class="card-header">Goal: {{goal}}</div>
-      <div class="card-body">
-        @for (nutrient of nutrientList; track nutrient){
-          <div class="nutrient">
-            <div class="nutrient-row">
-              <label [for]="nutrient.name" class="nutrient-name">{{nutrient.name}}</label>
-              <span class="nutrient-value">{{nutrient.value}} / {{nutrient.max}}</span>
-            </div>
-            <progress [id]="nutrient.name" [value]="nutrient.value" [max]="nutrient.max">{{nutrient.value}}</progress>
-          </div>
-        }
-      </div>
-    </div>
-
-    <div class="card mb-4">
-      <div class="card-header">Meal Suggestion</div>
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="time-input2" class="form-label">Select a time:</label>
-          <input type="time" for="time-input2" id="time-input2" [(ngModel)]="timeInput" class="form-control form-control-sm" required>
-        </div>
-        @for(meal of suggestionList; track meal; let i = $index){
-          <div class="suggestion">
-            <div class="suggestion-title">{{meal.title}}</div>
-            <div class="suggestion-macros">
-              {{meal.calories}} cal &middot; {{meal.protein}} protein &middot; {{meal.carbs}} carbs &middot; {{meal.fat}} fat
-            </div>
-            <button (click)="addMeal(i)" class="btn btn-outline-secondary btn-sm">add Meal</button>
-          </div>
-        } @empty {
-          <p class="text-muted small mb-0">No suggestions yet. Use the button below to find recipes that fit your remaining macros.</p>
-        }
-        <button (click)="suggestMeal()" class="btn btn-primary btn-sm mt-2">Suggest Meal</button>
-      </div>
-    </div>
-
-    <div class="card mb-4">
-      <div class="card-header">History</div>
-      <div class="card-body">
-        @for(day of historyList; track day){
-          <div class="history-day">
-            <div class="history-date">{{day.date}}</div>
-            <div class="history-macros">
-              @for(nutrient of day.macronutrientProgress; track nutrient){
-                <span class="history-macro">{{nutrient.name}}: {{nutrient.value}}</span>
-              }
-            </div>
-          </div>
-        } @empty {
-          <p class="text-muted mb-0">No previous days yet.</p>
-        }
-      </div>
-    </div>
-
-  </div>
-</div>
-
-}@else{
-
-  <div class="row justify-content-center">
-    <div class="col-md-7 col-lg-6">
-      <div class="card">
-        <div class="card-header">User Info</div>
-        <div class="card-body">
-          <p class="text-muted">Tell us about yourself so we can work out your daily targets.</p>
-
-          <div class="mb-3">
-            <label for="name" class="form-label">Name: </label>
-            <input type="text" for="name" id="name" [(ngModel)]="user.name" class="form-control form-control-sm" required>
-          </div>
-          <div class="row g-3">
-            <div class="col-sm-6 mb-3">
-              <label for="age" class="form-label">Age: </label>
-              <input type="number" for="age" id="age" [(ngModel)]="user.age" class="form-control form-control-sm" required>
-            </div>
-            <div class="col-sm-6 mb-3">
-              <label for="gender" class="form-label">Gender: </label>
-              <select name="gender" id="gender" [(ngModel)]="user.gender" class="form-select form-select-sm">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div class="col-sm-6 mb-3">
-              <label for="height" class="form-label">Height (cm): </label>
-              <input type="number" for="height" id="height" [(ngModel)]="user.height" class="form-control form-control-sm" required>
-            </div>
-            <div class="col-sm-6 mb-3">
-              <label for="weight" class="form-label">Weight (kg): </label>
-              <input type="number" for="weight" id="weight" [(ngModel)]="user.weight" class="form-control form-control-sm" required>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="activity-level" class="form-label">Activity level: </label>
-            <!-- The value attributes are what the backend matches on. Without them the
-                 submitted value is the full label and the multiplier is never applied. -->
-            <select name="activity-level" id="activity-level" [(ngModel)]="user.activityLevel" class="form-select form-select-sm">
-              <option value="Sedentary">Sedentary (limited exercise)</option>
-              <option value="Lightly Active">Lightly Active (light exercise less than 3 days/week)</option>
-              <option value="Moderately Active">Moderately Active (moderate exercise most days of the week)</option>
-              <option value="Very Active">Very Active (hard exercise every day)</option>
-              <option value="Extra Active">Extra Active (strenuous exercise two or more times per day)</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="goal" class="form-label">Goal: </label>
-            <select name="goal" id="goal" [(ngModel)]="user.goal" class="form-select form-select-sm">
-              <option value="Lose Weight">Lose Weight</option>
-              <option value="Gain Weight">Gain Weight</option>
-            </select>
-          </div>
-          <button (click)="sendUserInfo()" class="btn btn-primary btn-sm">Send User Info</button>
-        </div>
-      </div>
-    </div>
-  </div>
-}
+  }
 
 </div>
 </div>

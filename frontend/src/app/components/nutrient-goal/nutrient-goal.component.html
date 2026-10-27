@@ -1,0 +1,14 @@
+<div class="card mb-4">
+  <div class="card-header">Goal: {{goal}}</div>
+  <div class="card-body">
+    @for (nutrient of nutrients; track nutrient.name){
+      <div class="nutrient">
+        <div class="nutrient-row">
+          <label [for]="nutrient.name" class="nutrient-name">{{nutrient.name}}</label>
+          <span class="nutrient-value">{{nutrient.value}} / {{nutrient.max}}</span>
+        </div>
+        <progress [id]="nutrient.name" [value]="nutrient.value" [max]="nutrient.max">{{nutrient.value}}</progress>
+      </div>
+    }
+  </div>
+</div>
