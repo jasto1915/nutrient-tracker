@@ -55,14 +55,14 @@ _Functionality_
   - Provide text to guide user on providing enough information with focus on ingredient and portion
   - Provide user to edit summarized meal info [for later stages]
 
--Nutrient Tracking
-    - Record what meal user ate, nutrients contained in it, and saving it into the database
-    - Record User's info such as weight, height, gender, etc. in relation to the goal
-    - Provide nutrient goals for user and the discrepancy between the daily goal and what they have consumed
+- Nutrient Tracking
+  - Record what meal user ate, nutrients contained in it, and saving it into the database
+  - Record User's info such as weight, height, gender, etc. in relation to the goal
+  - Provide nutrient goals for user and the discrepancy between the daily goal and what they have consumed
 
--Nutrient Suggestion
-    - Provide suggestions to user on what meal to eat based on nutrient goals
-    - User can choose meal preferences before system providing suggestions (ex. japanese food) [if applicable]
+- Nutrient Suggestion
+  - Provide suggestions to user on what meal to eat based on nutrient goals
+  - User can choose meal preferences before system providing suggestions (ex. japanese food) [if applicable]
 
 _Tech Stack_
 - Front-end: Angular
